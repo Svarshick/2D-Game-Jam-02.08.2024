@@ -2,10 +2,14 @@ extends VBoxContainer
 
 @onready var main_menu = $"../MainMenu"
 var ParameterSettings = load("res://ui/ParameterSettings.tscn")
-const target_group = "guard"
+
 
 func _ready():
 	hide()
+	add_parameters_from("guard")
+
+
+func add_parameters_from(target_group: String):
 	var parameters = get_tree().get_first_node_in_group(target_group).get_parameter_names()
 	for parameter in parameters:
 		var new_parameter = ParameterSettings.instantiate()

@@ -1,23 +1,26 @@
-[gd_scene load_steps=38 format=3 uid="uid://cdsrl6y6ngaof"]
+[gd_scene load_steps=42 format=3 uid="uid://cdsrl6y6ngaof"]
 
 [ext_resource type="Script" path="res://guard/guard.gd" id="1_05rgs"]
+[ext_resource type="Script" path="res://guard/vision.gd" id="2_8put1"]
 [ext_resource type="Texture2D" uid="uid://rybof8oxq6qk" path="res://Pixel Adventure 1/Free/Main Characters/Ninja Frog/Idle (32x32).png" id="2_injlq"]
+[ext_resource type="Script" path="res://guard/intuition.gd" id="3_n3rmc"]
 [ext_resource type="Texture2D" uid="uid://c0e8wyne461au" path="res://Pixel Adventure 1/Free/Main Characters/Ninja Frog/Run (32x32).png" id="3_ujfwh"]
 [ext_resource type="Script" path="res://addons/beehave/nodes/beehave_tree.gd" id="4_rr8sg"]
 [ext_resource type="Script" path="res://addons/beehave/nodes/composites/selector.gd" id="5_r8gqg"]
-[ext_resource type="Script" path="res://guard/beehaviour/ConditionLeaf.gd" id="6_lh0tk"]
-[ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence_reactive.gd" id="6_rwjc2"]
-[ext_resource type="Script" path="res://guard/beehaviour/ActionLeaf.gd" id="7_0udre"]
-[ext_resource type="Script" path="res://guard/ActionLeaf.gd" id="9_2yjba"]
-[ext_resource type="Script" path="res://guard/Vision.gd" id="10_0wmx1"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence.gd" id="6_ufllo"]
+[ext_resource type="Script" path="res://guard/player_visibility.gd" id="7_h4ghl"]
+[ext_resource type="Script" path="res://guard/player_feeling.gd" id="8_3mi82"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/leaves/condition.gd" id="10_e10sc"]
+[ext_resource type="Script" path="res://guard/vision_change.gd" id="10_ey8md"]
+[ext_resource type="Script" path="res://guard/intuition_change.gd" id="12_3rfta"]
+[ext_resource type="Script" path="res://guard/decrease_player_seek.gd" id="13_5tsl6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_aimd0"]
 radius = 7.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ooe1b"]
-radius = 50.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_77yvu"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_vcbnd"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_ayj0a"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_v4fol"]
 atlas = ExtResource("2_injlq")
@@ -201,22 +204,21 @@ script = ExtResource("1_05rgs")
 [node name="Hitbox" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_aimd0")
 
-[node name="VisionRange" type="Area2D" parent="."]
+[node name="Vision" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 7
-script = ExtResource("10_0wmx1")
+script = ExtResource("2_8put1")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="VisionRange"]
-shape = SubResource("CircleShape2D_ooe1b")
-debug_color = Color(0, 0.544552, 0.943143, 0.42)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Vision"]
+shape = SubResource("CircleShape2D_77yvu")
 
 [node name="Intuition" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 7
+script = ExtResource("3_n3rmc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Intuition"]
-shape = SubResource("CircleShape2D_vcbnd")
-debug_color = Color(0.980392, 0, 0.109804, 0.419608)
+shape = SubResource("CircleShape2D_ayj0a")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -10)
@@ -225,23 +227,53 @@ animation = &"Idle"
 
 [node name="BeehaveTree" type="Node" parent="." node_paths=PackedStringArray("blackboard", "actor")]
 script = ExtResource("4_rr8sg")
-blackboard = NodePath("@Node@17584")
+blackboard = NodePath("@Node@316491")
 actor = NodePath("..")
 
-[node name="SelectorComposite" type="Node" parent="BeehaveTree"]
+[node name="GuardBehaviour" type="Node" parent="BeehaveTree"]
+script = ExtResource("6_ufllo")
+
+[node name="PerceptionSequence" type="Node" parent="BeehaveTree/GuardBehaviour"]
+script = ExtResource("6_ufllo")
+
+[node name="PlayerPerception" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence"]
 script = ExtResource("5_r8gqg")
 
-[node name="SequenceReactiveComposite" type="Node" parent="BeehaveTree/SelectorComposite"]
-script = ExtResource("6_rwjc2")
+[node name="PlayerIsFelt" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/PlayerPerception"]
+script = ExtResource("5_r8gqg")
 
-[node name="IsPlayerVisible" type="Node" parent="BeehaveTree/SelectorComposite/SequenceReactiveComposite"]
-script = ExtResource("6_lh0tk")
+[node name="PlayerVisibility" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/PlayerPerception/PlayerIsFelt"]
+script = ExtResource("6_ufllo")
 
-[node name="ActionLeaf" type="Node" parent="BeehaveTree/SelectorComposite/SequenceReactiveComposite"]
-script = ExtResource("7_0udre")
+[node name="IsPlayerVisible" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/PlayerPerception/PlayerIsFelt/PlayerVisibility"]
+script = ExtResource("7_h4ghl")
 
-[node name="ActionLeaf" type="Node" parent="BeehaveTree/SelectorComposite"]
-script = ExtResource("9_2yjba")
+[node name="VisionChange" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/PlayerPerception/PlayerIsFelt/PlayerVisibility"]
+script = ExtResource("10_ey8md")
+
+[node name="PlayerIntuition" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/PlayerPerception/PlayerIsFelt"]
+script = ExtResource("6_ufllo")
+
+[node name="IsPlayerIntuitiveFelt" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/PlayerPerception/PlayerIsFelt/PlayerIntuition"]
+script = ExtResource("8_3mi82")
+
+[node name="IntuitionChange" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/PlayerPerception/PlayerIsFelt/PlayerIntuition"]
+script = ExtResource("12_3rfta")
+
+[node name="DecreasePlayerSeek" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/PlayerPerception"]
+script = ExtResource("13_5tsl6")
+
+[node name="IllusionPerception" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence"]
+script = ExtResource("6_ufllo")
+
+[node name="IllusionVisibility" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/IllusionPerception"]
+script = ExtResource("10_e10sc")
+
+[node name="ConditionLeaf" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/IllusionPerception"]
+script = ExtResource("10_e10sc")
+
+[node name="DecisionSequence" type="Node" parent="BeehaveTree/GuardBehaviour"]
+script = ExtResource("6_ufllo")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_desired_distance = 10.0

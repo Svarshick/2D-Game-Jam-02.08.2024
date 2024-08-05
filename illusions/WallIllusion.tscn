@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://tvfylgvngs0c"]
+
+[ext_resource type="Script" path="res://illusions/illusion.gd" id="1_y0ush"]
+
+[node name="WallIllusion" type="Node"]
+script = ExtResource("1_y0ush")

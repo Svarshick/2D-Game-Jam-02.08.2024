@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://tile_map.gd" id="3_ho2jw"]
 [ext_resource type="Texture2D" uid="uid://dklstmlbtc3vv" path="res://Pixel Adventure 1/Free/Terrain/Terrain (16x16).png" id="4_5sd5c"]
 [ext_resource type="PackedScene" uid="uid://sjude81s1opk" path="res://ui/ui.tscn" id="5_fxo6a"]
-[ext_resource type="PackedScene" uid="uid://c628nv6p74i6w" path="res://Illusions/illusion_test.tscn" id="7_55uir"]
+[ext_resource type="PackedScene" uid="uid://c628nv6p74i6w" path="res://illusions/illusion_test.tscn" id="7_55uir"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_2itf2"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)

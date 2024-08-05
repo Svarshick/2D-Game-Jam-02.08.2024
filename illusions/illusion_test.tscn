@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c628nv6p74i6w"]
 
 [ext_resource type="Texture2D" uid="uid://dklstmlbtc3vv" path="res://Pixel Adventure 1/Free/Terrain/Terrain (16x16).png" id="1_6gjsw"]
-[ext_resource type="Script" path="res://Illusions/border.gd" id="2_ewrpa"]
+[ext_resource type="Script" path="res://illusions/border.gd" id="2_ewrpa"]
 
 [node name="IllusionTest" type="Node2D"]
 

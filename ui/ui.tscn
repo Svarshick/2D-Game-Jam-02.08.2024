@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=3 uid="uid://sjude81s1opk"]
+
+[ext_resource type="Script" path="res://ui/ui.gd" id="1_f4fee"]
+[ext_resource type="Script" path="res://ui/main_menu.gd" id="1_ubp3d"]
+[ext_resource type="Script" path="res://ui/guardian_settings.gd" id="2_3nk01"]
+
+[node name="ui" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_f4fee")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainMenu" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+script = ExtResource("1_ubp3d")
+
+[node name="ContinueButton" type="Button" parent="CenterContainer/MainMenu"]
+layout_mode = 2
+text = "continue"
+
+[node name="SettingsButton" type="Button" parent="CenterContainer/MainMenu"]
+layout_mode = 2
+text = "settings"
+
+[node name="QuitButton" type="Button" parent="CenterContainer/MainMenu"]
+layout_mode = 2
+text = "quit"
+
+[node name="GuardianSettings" type="VBoxContainer" parent="CenterContainer"]
+visible = false
+layout_mode = 2
+script = ExtResource("2_3nk01")
+
+[connection signal="pressed" from="CenterContainer/MainMenu/ContinueButton" to="CenterContainer/MainMenu" method="_on_continue_button_pressed"]
+[connection signal="pressed" from="CenterContainer/MainMenu/SettingsButton" to="CenterContainer/MainMenu" method="_on_settings_button_pressed"]
+[connection signal="pressed" from="CenterContainer/MainMenu/QuitButton" to="CenterContainer/MainMenu" method="_on_quit_button_pressed"]

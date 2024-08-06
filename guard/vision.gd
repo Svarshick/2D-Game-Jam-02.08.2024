@@ -21,6 +21,8 @@ func _ready():
 func on_body_entered_vision(body):
 	if body == guard.player:
 		player_in_range = true
+	if body is Illusion:
+		guard.illusions_stack.push_back(body)
 
 
 func on_body_exited_vision(body):

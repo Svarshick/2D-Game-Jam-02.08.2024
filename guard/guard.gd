@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 #to_resource
-var speed: float:
+var speed: float: 
 	set(value):
 		speed = value
 		navigation_agent_2d.max_speed = value
@@ -16,18 +16,34 @@ var vision_range: float:
 var intuition_range: float:
 	set(value):
 		intuition_range = value
-		intuition.range = value
+		intuition.range = value 
+#YOU HAVE TO REMAKE IT
 
-var direction = Vector2.RIGHT
 
-var player_was_noticed = false
 enum states {
 	DEFAULT = 0,
 	WORRY = 75,
 	SEE = 100
 }
-var current_state = states.DEFAULT
-var seek_degree = 0.0:
+var default_seek_increment = 10
+var default_seek_decrement = -2
+var on_notice_seek_increment = 20
+var on_notice_seek_decrement = -1
+var player_was_noticed: bool:
+	set(value):
+		player_was_noticed = value
+		if player_was_noticed:
+			seek_increment = on_notice_seek_increment
+			seek_decrement = on_notice_seek_decrement
+		else:
+			seek_increment = default_seek_increment
+			seek_decrement = default_seek_decrement
+
+var direction: Vector2
+var seek_increment
+var seek_decrement
+var state: int
+var seek_degree: float:
 	set(value):
 		if value < 0:
 			value = 0
@@ -35,12 +51,15 @@ var seek_degree = 0.0:
 			value = 100
 		seek_degree = value
 		if  value < states.WORRY:
-			current_state = states.DEFAULT
+			state = states.DEFAULT
 		elif value < states.SEE:
-			current_state = states.WORRY
+			state = states.WORRY
 		else:
-			current_state = states.SEE
+			state = states.SEE
 			player_was_noticed = true
+var illusions_stack: Array[Illusion]
+var detected_illusions: Array[Illusion]
+
 
 @onready var player = get_tree().get_first_node_in_group("player")
 @onready var animator = $AnimatedSprite2D
@@ -49,16 +68,28 @@ var seek_degree = 0.0:
 @onready var intuition = $Intuition
 
 
-func get_parameter_names():
-	return ["speed", "vision_angle", "vision_range"]
-
-
 func _ready():
+	direction = Vector2.DOWN
 	speed = 50
 	vision_angle = 100
 	vision_range = 200
 	intuition_range = 50
+	seek_degree = 0.0
+	player_was_noticed = false
 
+
+func get_parameter_names():
+	return [
+#			"speed",
+#			"vision_angle", 
+#			"vision_range", 
+			"intuition_range",
+			"player_was_noticed",
+			"default_seek_increment",
+			"default_seek_decrement",
+			"on_notice_seek_increment",
+			"on_notice_seek_decrement"
+			]
 
 func make_path(to_position: Vector2) -> void:
 	navigation_agent_2d.target_position = to_position
@@ -74,6 +105,9 @@ func move_along_path(delta: float) -> void:
 func _on_navigation_agent_2d_velocity_computed(safe_velocity):
 	velocity = safe_velocity 
 
+
+func is_illusion_right(illusion: Illusion):
+	return true
 
 func _process(delta):
 	queue_redraw()

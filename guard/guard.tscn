@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://cdsrl6y6ngaof"]
+[gd_scene load_steps=48 format=3 uid="uid://cdsrl6y6ngaof"]
 
 [ext_resource type="Script" path="res://guard/guard.gd" id="1_05rgs"]
 [ext_resource type="Script" path="res://guard/vision.gd" id="2_8put1"]
@@ -8,16 +8,18 @@
 [ext_resource type="Script" path="res://addons/beehave/nodes/beehave_tree.gd" id="4_rr8sg"]
 [ext_resource type="Script" path="res://addons/beehave/nodes/composites/selector.gd" id="5_r8gqg"]
 [ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence.gd" id="6_ufllo"]
-[ext_resource type="Script" path="res://guard/player_visibility.gd" id="7_h4ghl"]
-[ext_resource type="Script" path="res://guard/player_feeling.gd" id="8_3mi82"]
-[ext_resource type="Script" path="res://addons/beehave/nodes/leaves/condition.gd" id="10_e10sc"]
-[ext_resource type="Script" path="res://guard/vision_change.gd" id="10_ey8md"]
-[ext_resource type="Script" path="res://guard/intuition_change.gd" id="12_3rfta"]
-[ext_resource type="Script" path="res://guard/decrease_player_seek.gd" id="13_5tsl6"]
-[ext_resource type="Script" path="res://guard/to_do_chase.gd" id="15_s35bf"]
-[ext_resource type="Script" path="res://guard/do_chase.gd" id="16_ujx15"]
-[ext_resource type="Script" path="res://guard/to_do_manhunt.gd" id="17_xjypc"]
-[ext_resource type="Script" path="res://guard/do_manhunt.gd" id="18_b2e8e"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence_reactive.gd" id="7_natjp"]
+[ext_resource type="Script" path="res://guard/beehaviour/player_visibility.gd" id="10_iykuq"]
+[ext_resource type="Script" path="res://guard/beehaviour/vision_change.gd" id="11_dvwgb"]
+[ext_resource type="Script" path="res://guard/beehaviour/player_feeling.gd" id="12_cxb3m"]
+[ext_resource type="Script" path="res://guard/beehaviour/intuition_change.gd" id="13_rwp3h"]
+[ext_resource type="Script" path="res://guard/beehaviour/decrease_player_seek.gd" id="14_oegr5"]
+[ext_resource type="Script" path="res://guard/beehaviour/is_felt_illusion.gd" id="15_d4r11"]
+[ext_resource type="Script" path="res://guard/beehaviour/to_do_chase.gd" id="16_galgt"]
+[ext_resource type="Script" path="res://guard/beehaviour/do_chase.gd" id="17_dj4x6"]
+[ext_resource type="Script" path="res://guard/beehaviour/to_do_manhunt.gd" id="18_t68dl"]
+[ext_resource type="Script" path="res://guard/beehaviour/do_manhunt.gd" id="19_6pj0n"]
+[ext_resource type="Script" path="res://guard/beehaviour/to_default.gd" id="20_3iyvj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_aimd0"]
 radius = 7.0
@@ -229,80 +231,6 @@ position = Vector2(0, -10)
 sprite_frames = SubResource("SpriteFrames_tb88x")
 animation = &"Idle"
 
-[node name="BeehaveTree" type="Node" parent="." node_paths=PackedStringArray("blackboard", "actor")]
-script = ExtResource("4_rr8sg")
-blackboard = NodePath("@Node@19272")
-actor = NodePath("..")
-
-[node name="GuardBehaviour" type="Node" parent="BeehaveTree"]
-script = ExtResource("6_ufllo")
-
-[node name="Perception" type="Node" parent="BeehaveTree/GuardBehaviour"]
-script = ExtResource("6_ufllo")
-
-[node name="Player" type="Node" parent="BeehaveTree/GuardBehaviour/Perception"]
-script = ExtResource("5_r8gqg")
-
-[node name="IsFelt" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Player"]
-script = ExtResource("5_r8gqg")
-
-[node name="PlayerVisibility" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Player/IsFelt"]
-script = ExtResource("6_ufllo")
-
-[node name="IsPlayerVisible" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Player/IsFelt/PlayerVisibility"]
-script = ExtResource("7_h4ghl")
-
-[node name="VisionChange" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Player/IsFelt/PlayerVisibility"]
-script = ExtResource("10_ey8md")
-
-[node name="PlayerIntuition" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Player/IsFelt"]
-script = ExtResource("6_ufllo")
-
-[node name="IsPlayerIntuitiveFelt" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Player/IsFelt/PlayerIntuition"]
-script = ExtResource("8_3mi82")
-
-[node name="IntuitionChange" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Player/IsFelt/PlayerIntuition"]
-script = ExtResource("12_3rfta")
-
-[node name="DecreaseSeek" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Player"]
-script = ExtResource("13_5tsl6")
-
-[node name="Illusion" type="Node" parent="BeehaveTree/GuardBehaviour/Perception"]
-script = ExtResource("6_ufllo")
-
-[node name="IsFelt" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Illusion"]
-script = ExtResource("10_e10sc")
-
-[node name="ConditionLeaf" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Illusion"]
-script = ExtResource("10_e10sc")
-
-[node name="Decision" type="Node" parent="BeehaveTree/GuardBehaviour"]
-script = ExtResource("5_r8gqg")
-
-[node name="Player" type="Node" parent="BeehaveTree/GuardBehaviour/Decision"]
-script = ExtResource("5_r8gqg")
-
-[node name="Chase" type="Node" parent="BeehaveTree/GuardBehaviour/Decision/Player"]
-script = ExtResource("6_ufllo")
-
-[node name="ToDo?" type="Node" parent="BeehaveTree/GuardBehaviour/Decision/Player/Chase"]
-script = ExtResource("15_s35bf")
-
-[node name="Do" type="Node" parent="BeehaveTree/GuardBehaviour/Decision/Player/Chase"]
-script = ExtResource("16_ujx15")
-
-[node name="Manhunt" type="Node" parent="BeehaveTree/GuardBehaviour/Decision/Player"]
-script = ExtResource("6_ufllo")
-
-[node name="ToDo?" type="Node" parent="BeehaveTree/GuardBehaviour/Decision/Player/Manhunt"]
-script = ExtResource("17_xjypc")
-
-[node name="Do" type="Node" parent="BeehaveTree/GuardBehaviour/Decision/Player/Manhunt"]
-script = ExtResource("18_b2e8e")
-
-[node name="Illusion" type="Node" parent="BeehaveTree/GuardBehaviour/Decision"]
-script = ExtResource("5_r8gqg")
-
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_desired_distance = 10.0
 path_postprocessing = 1
@@ -310,5 +238,76 @@ avoidance_enabled = true
 radius = 7.0
 debug_enabled = true
 debug_path_custom_color = Color(1, 0, 1, 1)
+
+[node name="Bee" type="Node" parent="." node_paths=PackedStringArray("blackboard", "actor")]
+script = ExtResource("4_rr8sg")
+blackboard = NodePath("@Node@40820")
+actor = NodePath("..")
+
+[node name="GuardBehaviour" type="Node" parent="Bee"]
+script = ExtResource("7_natjp")
+
+[node name="Perception" type="Node" parent="Bee/GuardBehaviour"]
+script = ExtResource("6_ufllo")
+
+[node name="Player" type="Node" parent="Bee/GuardBehaviour/Perception"]
+script = ExtResource("5_r8gqg")
+
+[node name="IsFelt" type="Node" parent="Bee/GuardBehaviour/Perception/Player"]
+script = ExtResource("5_r8gqg")
+
+[node name="PlayerVisibility" type="Node" parent="Bee/GuardBehaviour/Perception/Player/IsFelt"]
+script = ExtResource("6_ufllo")
+
+[node name="IsPlayerVisible" type="Node" parent="Bee/GuardBehaviour/Perception/Player/IsFelt/PlayerVisibility"]
+script = ExtResource("10_iykuq")
+
+[node name="VisionChange" type="Node" parent="Bee/GuardBehaviour/Perception/Player/IsFelt/PlayerVisibility"]
+script = ExtResource("11_dvwgb")
+
+[node name="PlayerIntuition" type="Node" parent="Bee/GuardBehaviour/Perception/Player/IsFelt"]
+script = ExtResource("6_ufllo")
+
+[node name="IsPlayerIntuitiveFelt" type="Node" parent="Bee/GuardBehaviour/Perception/Player/IsFelt/PlayerIntuition"]
+script = ExtResource("12_cxb3m")
+
+[node name="IntuitionChange" type="Node" parent="Bee/GuardBehaviour/Perception/Player/IsFelt/PlayerIntuition"]
+script = ExtResource("13_rwp3h")
+
+[node name="DecreaseSeek" type="Node" parent="Bee/GuardBehaviour/Perception/Player"]
+script = ExtResource("14_oegr5")
+
+[node name="AreIllusionsFelt" type="Node" parent="Bee/GuardBehaviour/Perception"]
+script = ExtResource("15_d4r11")
+
+[node name="Decision" type="Node" parent="Bee/GuardBehaviour"]
+script = ExtResource("5_r8gqg")
+
+[node name="Player" type="Node" parent="Bee/GuardBehaviour/Decision"]
+script = ExtResource("5_r8gqg")
+
+[node name="Chase" type="Node" parent="Bee/GuardBehaviour/Decision/Player"]
+script = ExtResource("6_ufllo")
+
+[node name="BeginCondition" type="Node" parent="Bee/GuardBehaviour/Decision/Player/Chase"]
+script = ExtResource("16_galgt")
+
+[node name="Do" type="Node" parent="Bee/GuardBehaviour/Decision/Player/Chase"]
+script = ExtResource("17_dj4x6")
+
+[node name="Manhunt" type="Node" parent="Bee/GuardBehaviour/Decision/Player"]
+script = ExtResource("6_ufllo")
+
+[node name="BeginCondition" type="Node" parent="Bee/GuardBehaviour/Decision/Player/Manhunt"]
+script = ExtResource("18_t68dl")
+
+[node name="Do" type="Node" parent="Bee/GuardBehaviour/Decision/Player/Manhunt"]
+script = ExtResource("19_6pj0n")
+
+[node name="Illusion" type="Node" parent="Bee/GuardBehaviour/Decision"]
+script = ExtResource("5_r8gqg")
+
+[node name="ToDefault" type="Node" parent="Bee/GuardBehaviour/Decision"]
+script = ExtResource("20_3iyvj")
 
 [connection signal="velocity_computed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_velocity_computed"]

@@ -51,10 +51,12 @@ var seek_degree: float:
 		seek_degree = value
 		if  value < states.WORRY:
 			state = states.DEFAULT
-			green = 255 * (states.WORRY - value) * 100 / states.WORRY
+			green = 255
+			red = 255 * value * 100 / (states.SEE - states.WORRY)
 		elif value < states.SEE:
 			state = states.WORRY
-			red = 255 * value * 100 / (states.SEE - states.WORRY)
+			red = 255
+			green = 255 * (states.WORRY - value) * 100 / (states.WORRY - value)
 		else:
 			state = states.SEE
 			red = 255
@@ -63,8 +65,8 @@ var seek_degree: float:
 var illusions_stack: Array[Illusion]
 var detected_illusions: Array[Illusion]
 
-var red = 0
-var green = 255
+var red: float = 0
+var green : float = 255
 
 @export var direction = Vector2.RIGHT
 @export var default_walking: Array[Vector2] = [

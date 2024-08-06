@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://cdsrl6y6ngaof"]
+[gd_scene load_steps=46 format=3 uid="uid://cdsrl6y6ngaof"]
 
 [ext_resource type="Script" path="res://guard/guard.gd" id="1_05rgs"]
 [ext_resource type="Script" path="res://guard/vision.gd" id="2_8put1"]
@@ -14,6 +14,10 @@
 [ext_resource type="Script" path="res://guard/vision_change.gd" id="10_ey8md"]
 [ext_resource type="Script" path="res://guard/intuition_change.gd" id="12_3rfta"]
 [ext_resource type="Script" path="res://guard/decrease_player_seek.gd" id="13_5tsl6"]
+[ext_resource type="Script" path="res://guard/to_do_chase.gd" id="15_s35bf"]
+[ext_resource type="Script" path="res://guard/do_chase.gd" id="16_ujx15"]
+[ext_resource type="Script" path="res://guard/to_do_manhunt.gd" id="17_xjypc"]
+[ext_resource type="Script" path="res://guard/do_manhunt.gd" id="18_b2e8e"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_aimd0"]
 radius = 7.0
@@ -227,53 +231,77 @@ animation = &"Idle"
 
 [node name="BeehaveTree" type="Node" parent="." node_paths=PackedStringArray("blackboard", "actor")]
 script = ExtResource("4_rr8sg")
-blackboard = NodePath("@Node@316491")
+blackboard = NodePath("@Node@19272")
 actor = NodePath("..")
 
 [node name="GuardBehaviour" type="Node" parent="BeehaveTree"]
 script = ExtResource("6_ufllo")
 
-[node name="PerceptionSequence" type="Node" parent="BeehaveTree/GuardBehaviour"]
+[node name="Perception" type="Node" parent="BeehaveTree/GuardBehaviour"]
 script = ExtResource("6_ufllo")
 
-[node name="PlayerPerception" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence"]
+[node name="Player" type="Node" parent="BeehaveTree/GuardBehaviour/Perception"]
 script = ExtResource("5_r8gqg")
 
-[node name="PlayerIsFelt" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/PlayerPerception"]
+[node name="IsFelt" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Player"]
 script = ExtResource("5_r8gqg")
 
-[node name="PlayerVisibility" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/PlayerPerception/PlayerIsFelt"]
+[node name="PlayerVisibility" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Player/IsFelt"]
 script = ExtResource("6_ufllo")
 
-[node name="IsPlayerVisible" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/PlayerPerception/PlayerIsFelt/PlayerVisibility"]
+[node name="IsPlayerVisible" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Player/IsFelt/PlayerVisibility"]
 script = ExtResource("7_h4ghl")
 
-[node name="VisionChange" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/PlayerPerception/PlayerIsFelt/PlayerVisibility"]
+[node name="VisionChange" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Player/IsFelt/PlayerVisibility"]
 script = ExtResource("10_ey8md")
 
-[node name="PlayerIntuition" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/PlayerPerception/PlayerIsFelt"]
+[node name="PlayerIntuition" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Player/IsFelt"]
 script = ExtResource("6_ufllo")
 
-[node name="IsPlayerIntuitiveFelt" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/PlayerPerception/PlayerIsFelt/PlayerIntuition"]
+[node name="IsPlayerIntuitiveFelt" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Player/IsFelt/PlayerIntuition"]
 script = ExtResource("8_3mi82")
 
-[node name="IntuitionChange" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/PlayerPerception/PlayerIsFelt/PlayerIntuition"]
+[node name="IntuitionChange" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Player/IsFelt/PlayerIntuition"]
 script = ExtResource("12_3rfta")
 
-[node name="DecreasePlayerSeek" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/PlayerPerception"]
+[node name="DecreaseSeek" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Player"]
 script = ExtResource("13_5tsl6")
 
-[node name="IllusionPerception" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence"]
+[node name="Illusion" type="Node" parent="BeehaveTree/GuardBehaviour/Perception"]
 script = ExtResource("6_ufllo")
 
-[node name="IllusionVisibility" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/IllusionPerception"]
+[node name="IsFelt" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Illusion"]
 script = ExtResource("10_e10sc")
 
-[node name="ConditionLeaf" type="Node" parent="BeehaveTree/GuardBehaviour/PerceptionSequence/IllusionPerception"]
+[node name="ConditionLeaf" type="Node" parent="BeehaveTree/GuardBehaviour/Perception/Illusion"]
 script = ExtResource("10_e10sc")
 
-[node name="DecisionSequence" type="Node" parent="BeehaveTree/GuardBehaviour"]
+[node name="Decision" type="Node" parent="BeehaveTree/GuardBehaviour"]
+script = ExtResource("5_r8gqg")
+
+[node name="Player" type="Node" parent="BeehaveTree/GuardBehaviour/Decision"]
+script = ExtResource("5_r8gqg")
+
+[node name="Chase" type="Node" parent="BeehaveTree/GuardBehaviour/Decision/Player"]
 script = ExtResource("6_ufllo")
+
+[node name="ToDo?" type="Node" parent="BeehaveTree/GuardBehaviour/Decision/Player/Chase"]
+script = ExtResource("15_s35bf")
+
+[node name="Do" type="Node" parent="BeehaveTree/GuardBehaviour/Decision/Player/Chase"]
+script = ExtResource("16_ujx15")
+
+[node name="Manhunt" type="Node" parent="BeehaveTree/GuardBehaviour/Decision/Player"]
+script = ExtResource("6_ufllo")
+
+[node name="ToDo?" type="Node" parent="BeehaveTree/GuardBehaviour/Decision/Player/Manhunt"]
+script = ExtResource("17_xjypc")
+
+[node name="Do" type="Node" parent="BeehaveTree/GuardBehaviour/Decision/Player/Manhunt"]
+script = ExtResource("18_b2e8e")
+
+[node name="Illusion" type="Node" parent="BeehaveTree/GuardBehaviour/Decision"]
+script = ExtResource("5_r8gqg")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_desired_distance = 10.0

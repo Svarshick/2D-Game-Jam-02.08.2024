@@ -22,11 +22,11 @@ var direction = Vector2.RIGHT
 
 var player_was_noticed = false
 enum states {
-	DEFAULT,
-	SEEK,
-	SEE
+	DEFAULT = 0,
+	WORRY = 75,
+	SEE = 100
 }
-var current_state = states.get("DEFAULT")
+var current_state = states.DEFAULT
 var seek_degree = 0.0:
 	set(value):
 		if value < 0:
@@ -34,14 +34,14 @@ var seek_degree = 0.0:
 		if value > 100:
 			value = 100
 		seek_degree = value
-		if  value < 75:
-			current_state = states.get("DEFAULT")
-		elif value < 100:
-			current_state = states.get("SEEK")
-		elif value == 100:
-			current_state = states.get("SEE")
+		if  value < states.WORRY:
+			current_state = states.DEFAULT
+		elif value < states.SEE:
+			current_state = states.WORRY
+		else:
+			current_state = states.SEE
 			player_was_noticed = true
-				
+
 @onready var player = get_tree().get_first_node_in_group("player")
 @onready var animator = $AnimatedSprite2D
 @onready var navigation_agent_2d = $NavigationAgent2D

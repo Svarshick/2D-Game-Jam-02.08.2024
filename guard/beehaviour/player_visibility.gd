@@ -5,7 +5,7 @@ func tick(actor, blackboard):
 	if (
 			actor.vision.player_in_range 
 			and actor.vision.is_body_in_sector(player) 
-			and actor.vision.is_body_felt(player, 0x7)
+			and actor.vision.is_body_felt(player, actor.vision.mask)
 	):
 		return SUCCESS
 	return FAILURE 

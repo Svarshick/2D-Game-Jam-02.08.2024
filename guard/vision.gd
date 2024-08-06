@@ -4,6 +4,7 @@ extends Feeling
 @onready var guard = $".."
 @onready var collision_shape_2d = $CollisionShape2D
 
+var mask = 0b10011
 var angle: float
 var range: float:
 	set(value):

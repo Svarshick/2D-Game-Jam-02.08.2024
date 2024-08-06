@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bk5micab20v5e"]
+
+[ext_resource type="Script" path="res://hideout/hideout.gd" id="1_tdwdn"]
+[ext_resource type="Texture2D" uid="uid://dklstmlbtc3vv" path="res://Pixel Adventure 1/Free/Terrain/Terrain (16x16).png" id="2_yxgdk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6hif0"]
+size = Vector2(16, 16)
+
+[node name="Table" type="Area2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_tdwdn")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_yxgdk")
+region_enabled = true
+region_rect = Rect2(192, 144, 16, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_6hif0")

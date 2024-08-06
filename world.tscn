@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bjvlcoxwn8i62"]
+[gd_scene load_steps=12 format=3 uid="uid://bjvlcoxwn8i62"]
 
 [ext_resource type="PackedScene" uid="uid://d3go7felji04i" path="res://player/player.tscn" id="1_3cgei"]
 [ext_resource type="Script" path="res://world.gd" id="1_gxgv0"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dklstmlbtc3vv" path="res://Pixel Adventure 1/Free/Terrain/Terrain (16x16).png" id="4_5sd5c"]
 [ext_resource type="PackedScene" uid="uid://sjude81s1opk" path="res://ui/ui.tscn" id="5_fxo6a"]
 [ext_resource type="PackedScene" uid="uid://cyy6w6aha0yvs" path="res://illusions/WallIllusion.tscn" id="7_2pbk6"]
+[ext_resource type="PackedScene" uid="uid://bk5micab20v5e" path="res://hideout/Table.tscn" id="8_ag3f2"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_2itf2"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
@@ -546,8 +547,15 @@ collision_mask = 7
 
 [node name="Guard" parent="." instance=ExtResource("3_g82tl")]
 position = Vector2(292, 131)
+up_direction = Vector2(-0.99995, -0.0099995)
 
 [node name="ui" parent="." instance=ExtResource("5_fxo6a")]
 
 [node name="WallIllusion" parent="." instance=ExtResource("7_2pbk6")]
 position = Vector2(235, 165)
+
+[node name="Table" parent="." instance=ExtResource("8_ag3f2")]
+position = Vector2(122, 88)
+
+[node name="Table2" parent="." instance=ExtResource("8_ag3f2")]
+position = Vector2(122, 72)

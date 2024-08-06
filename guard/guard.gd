@@ -39,7 +39,7 @@ var player_was_noticed: bool:
 			seek_increment = default_seek_increment
 			seek_decrement = default_seek_decrement
 
-var direction: Vector2
+@export var direction = Vector2.RIGHT
 var seek_increment
 var seek_decrement
 var state: int
@@ -69,7 +69,7 @@ var detected_illusions: Array[Illusion]
 
 
 func _ready():
-	direction = Vector2.DOWN
+	direction = direction.normalized()
 	speed = 50
 	vision_angle = 100
 	vision_range = 200
@@ -91,6 +91,7 @@ func get_parameter_names():
 			"on_notice_seek_decrement"
 			]
 
+
 func make_path(to_position: Vector2) -> void:
 	navigation_agent_2d.target_position = to_position
 
@@ -109,6 +110,7 @@ func _on_navigation_agent_2d_velocity_computed(safe_velocity):
 func is_illusion_right(illusion: Illusion):
 	return true
 
+
 func _process(delta):
 	queue_redraw()
 
@@ -116,6 +118,7 @@ func _process(delta):
 func _draw():
 	draw_sector(Vector2.ZERO, direction, vision.range, vision.angle * PI / 180, 20, Color(0, 255, 0, 0.3))
 	draw_circle(Vector2.ZERO, intuition.range,  Color(0, 0, 255, 0.3))
+
 
 func draw_sector(point: Vector2, direction: Vector2, length: float, angle: float, precision: int, color: Color):
 	var current_point = (direction * length).rotated(-angle/2)

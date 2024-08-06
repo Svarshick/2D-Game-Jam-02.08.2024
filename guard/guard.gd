@@ -52,11 +52,11 @@ var seek_degree: float:
 		if  value < states.WORRY:
 			state = states.DEFAULT
 			green = 255
-			red = 255 * value * 100 / (states.SEE - states.WORRY)
+			red = 255 * (value / states.WORRY)
 		elif value < states.SEE:
 			state = states.WORRY
 			red = 255
-			green = 255 * (states.WORRY - value) * 100 / (states.WORRY - value)
+			green = 255 * (states.SEE - states.WORRY - value) / (states.SEE - states.WORRY)
 		else:
 			state = states.SEE
 			red = 255
@@ -68,6 +68,7 @@ var detected_illusions: Array[Illusion]
 var red: float = 0
 var green : float = 255
 
+@export var stay = true
 @export var direction = Vector2.RIGHT
 @export var default_walking: Array[Vector2] = [
 		Vector2(0, 0),
@@ -75,7 +76,6 @@ var green : float = 255
 		]
 
 @onready var player = get_tree().get_first_node_in_group("player")
-@onready var animator = $AnimatedSprite2D
 @onready var navigation_agent_2d = $NavigationAgent2D
 @onready var vision = $Vision
 @onready var intuition = $Intuition
@@ -130,8 +130,8 @@ func _process(delta):
 
 
 func _draw():
-	draw_sector(Vector2.ZERO, direction, vision.range, vision.angle * PI / 180, 20, Color(red, green, 0, 0.3))
-	draw_circle(Vector2.ZERO, intuition.range,  Color(red, green, 0, 0.3))
+	draw_sector(Vector2.ZERO, direction, vision.range, vision.angle * PI / 180, 20, Color(red, green, 0, 0.1))
+	draw_circle(Vector2.ZERO, intuition.range,  Color(red, green, 0, 0.1))
 
 
 func draw_sector(point: Vector2, direction: Vector2, length: float, angle: float, precision: int, color: Color):

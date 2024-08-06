@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://cdsrl6y6ngaof"]
+[gd_scene load_steps=49 format=3 uid="uid://cdsrl6y6ngaof"]
 
 [ext_resource type="Script" path="res://guard/guard.gd" id="1_05rgs"]
 [ext_resource type="Script" path="res://guard/vision.gd" id="2_8put1"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://addons/beehave/nodes/beehave_tree.gd" id="4_rr8sg"]
 [ext_resource type="Script" path="res://addons/beehave/nodes/composites/selector.gd" id="5_r8gqg"]
 [ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence.gd" id="6_ufllo"]
+[ext_resource type="Script" path="res://guard/navigator.gd" id="6_wqqjm"]
 [ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence_reactive.gd" id="7_natjp"]
 [ext_resource type="Script" path="res://guard/beehaviour/player_visibility.gd" id="10_iykuq"]
 [ext_resource type="Script" path="res://guard/beehaviour/vision_change.gd" id="11_dvwgb"]
@@ -203,6 +204,7 @@ animations = [{
 }]
 
 [node name="Guard" type="CharacterBody2D" groups=["guard"]]
+visible = false
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_05rgs")
@@ -238,6 +240,7 @@ avoidance_enabled = true
 radius = 7.0
 debug_enabled = true
 debug_path_custom_color = Color(1, 0, 1, 1)
+script = ExtResource("6_wqqjm")
 
 [node name="Bee" type="Node" parent="." node_paths=PackedStringArray("blackboard", "actor")]
 script = ExtResource("4_rr8sg")

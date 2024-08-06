@@ -546,8 +546,10 @@ position = Vector2(273, 201)
 collision_mask = 7
 
 [node name="Guard" parent="." instance=ExtResource("3_g82tl")]
-position = Vector2(292, 131)
-up_direction = Vector2(-0.99995, -0.0099995)
+visible = true
+position = Vector2(337, 20)
+up_direction = Vector2(-1, 0)
+default_walking = Array[Vector2]([Vector2(0, 0), Vector2(100, 100), Vector2(200, 0), Vector2(0, 100)])
 
 [node name="ui" parent="." instance=ExtResource("5_fxo6a")]
 

@@ -8,13 +8,13 @@ size = Vector2(16, 16)
 
 [node name="Table" type="Area2D"]
 collision_layer = 0
-collision_mask = 0
+collision_mask = 16
 script = ExtResource("1_tdwdn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_6hif0")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_yxgdk")
 region_enabled = true
 region_rect = Rect2(192, 144, 16, 16)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_6hif0")

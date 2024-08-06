@@ -39,7 +39,6 @@ var player_was_noticed: bool:
 			seek_increment = default_seek_increment
 			seek_decrement = default_seek_decrement
 
-@export var direction = Vector2.RIGHT
 var seek_increment
 var seek_decrement
 var state: int
@@ -52,14 +51,26 @@ var seek_degree: float:
 		seek_degree = value
 		if  value < states.WORRY:
 			state = states.DEFAULT
+			green = 255 * (states.WORRY - value) * 100 / states.WORRY
 		elif value < states.SEE:
 			state = states.WORRY
+			red = 255 * value * 100 / (states.SEE - states.WORRY)
 		else:
 			state = states.SEE
+			red = 255
+			green = 0
 			player_was_noticed = true
 var illusions_stack: Array[Illusion]
 var detected_illusions: Array[Illusion]
 
+var red = 0
+var green = 255
+
+@export var direction = Vector2.RIGHT
+@export var default_walking: Array[Vector2] = [
+		Vector2(0, 0),
+		Vector2(100, 100)
+		]
 
 @onready var player = get_tree().get_first_node_in_group("player")
 @onready var animator = $AnimatedSprite2D
@@ -76,6 +87,7 @@ func _ready():
 	intuition_range = 50
 	seek_degree = 0.0
 	player_was_noticed = false
+	navigation_agent_2d.on_reached_target()
 
 
 func get_parameter_names():
@@ -116,8 +128,8 @@ func _process(delta):
 
 
 func _draw():
-	draw_sector(Vector2.ZERO, direction, vision.range, vision.angle * PI / 180, 20, Color(0, 255, 0, 0.3))
-	draw_circle(Vector2.ZERO, intuition.range,  Color(0, 0, 255, 0.3))
+	draw_sector(Vector2.ZERO, direction, vision.range, vision.angle * PI / 180, 20, Color(red, green, 0, 0.3))
+	draw_circle(Vector2.ZERO, intuition.range,  Color(red, green, 0, 0.3))
 
 
 func draw_sector(point: Vector2, direction: Vector2, length: float, angle: float, precision: int, color: Color):

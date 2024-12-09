@@ -1,6 +1,6 @@
 extends ConditionLeaf
 
 func tick(actor, blackboard): #expand
-	if actor.state == actor.states.WORRY:
+	if actor.status == actor.statuses.WORRY:
 		return SUCCESS
 	return FAILURE 

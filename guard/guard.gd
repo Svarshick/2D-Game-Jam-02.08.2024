@@ -20,11 +20,12 @@ var intuition_range: float:
 #YOU HAVE TO REMAKE IT
 
 
-enum states {
+enum statuses {
 	DEFAULT = 0,
 	WORRY = 75,
 	SEE = 100
 }
+
 var default_seek_increment = 10
 var default_seek_decrement = -2
 var on_notice_seek_increment = 20
@@ -41,7 +42,7 @@ var player_was_noticed: bool:
 
 var seek_increment
 var seek_decrement
-var state: int
+var status: int
 var seek_degree: float:
 	set(value):
 		if value < 0:
@@ -49,24 +50,25 @@ var seek_degree: float:
 		if value > 100:
 			value = 100
 		seek_degree = value
-		if  value < states.WORRY:
-			state = states.DEFAULT
-			green = 255
-			red = 255 * (value / states.WORRY)
-		elif value < states.SEE:
-			state = states.WORRY
-			red = 255
-			green = 255 * (states.SEE - states.WORRY - value) / (states.SEE - states.WORRY)
+		if  value < statuses.WORRY:
+			status = statuses.DEFAULT
+			status_color.g = 1
+			status_color.r = (value / statuses.WORRY)
+		elif value < statuses.SEE:
+			status = statuses.WORRY
+			status_color.r = 1;
+			status_color.g = (statuses.SEE - statuses.WORRY - value) / (statuses.SEE - statuses.WORRY)
 		else:
-			state = states.SEE
-			red = 255
-			green = 0
+			status = statuses.SEE
+			status_color.r = 1;
+			status_color.g = 0;
 			player_was_noticed = true
+#unused
 var illusions_stack: Array[Illusion]
 var detected_illusions: Array[Illusion]
+#because...
 
-var red: float = 0
-var green : float = 255
+var status_color = Color(1, 0, 0, 0.2);
 
 @export var stay = true
 @export var direction = Vector2.RIGHT
@@ -130,26 +132,40 @@ func _process(delta):
 
 
 func _draw():
-	draw_sector(Vector2.ZERO, direction, vision.range, vision.angle * PI / 180, 20, Color(red, green, 0, 0.1))
-	draw_circle(Vector2.ZERO, intuition.range,  Color(red, green, 0, 0.1))
+	draw_vision_sector(Vector2.ZERO, direction, vision.range, vision.angle * PI / 180, 20, status_color)
+	draw_circle(Vector2.ZERO, intuition.range,  status_color)
 
 
-func draw_sector(point: Vector2, direction: Vector2, length: float, angle: float, precision: int, color: Color):
+func draw_vision_sector(point: Vector2, direction: Vector2, length: float, angle: float, precision: int, color: Color):
 	var current_point = (direction * length).rotated(-angle/2)
-	var points = PackedVector2Array([point, current_point])
-	var counter = 1
-	while (counter < precision):
+	var points = PackedVector2Array()
+	points.resize(precision + 1)
+	points.insert(0, point)
+	var space_state = get_world_2d().get_direct_space_state()
+	for i in range(1, precision):
+		var query = PhysicsRayQueryParameters2D.create(global_position, global_position + current_point, vision.mask)
+		var sight_check = space_state.intersect_ray(query)
+		if not sight_check.is_empty():
+			points.insert(i, sight_check.position - global_position)
+		else:
+			points.insert(i, current_point)
 		current_point = current_point.rotated(angle / (precision - 1))
-		counter += 1
-		points.push_back(current_point)
 	draw_colored_polygon(points, color)
-	
+
+#legacy
+
+#func draw_sector(point: Vector2, direction: Vector2, length: float, angle: float, precision: int, color: Color):
+	#var current_point = (direction * length).rotated(-angle/2)
+	#var points = PackedVector2Array([point, current_point])
+	#var counter = 1
+	#while (counter < precision):
+		#current_point = current_point.rotated(angle / (precision - 1))
+		#counter += 1
+		#points.push_back(current_point)
+	#draw_colored_polygon(points, color)
 
 
 #func move_toward_position(to_position: Vector2, delta: float): useless cosde 
 	#direction = Vector2(to_position - position).normalized()
 	#velocity = direction * speed
 	#move_and_collide(velocity * delta)
-
-
-

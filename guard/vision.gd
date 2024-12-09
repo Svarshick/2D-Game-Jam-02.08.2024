@@ -35,4 +35,3 @@ func is_body_in_sector(body: Node) -> bool:
 	var vecotor_to_body = body.position - guard.position
 	var angle_to_body =  abs(vecotor_to_body.angle_to(guard.direction))
 	return angle_to_body < (angle * PI / 360)
-

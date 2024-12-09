@@ -112,7 +112,7 @@ script = ExtResource("6_wqqjm")
 
 [node name="Bee" type="Node" parent="." node_paths=PackedStringArray("blackboard", "actor")]
 script = ExtResource("4_rr8sg")
-blackboard = NodePath("@Node@17582")
+blackboard = NodePath("@Node@24367")
 actor = NodePath("..")
 
 [node name="GuardBehaviour" type="Node" parent="Bee"]

@@ -8,7 +8,7 @@ func _ready():
 
 
 func on_reached_target():
-	if guard.state == guard.states.DEFAULT:
+	if guard.status == guard.statuses.DEFAULT:
 		var position = guard.default_walking[point_number]
 		target_position = position
 		point_number += 1

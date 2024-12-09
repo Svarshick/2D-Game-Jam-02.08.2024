@@ -69,14 +69,13 @@ var detected_illusions: Array[Illusion]
 #because...
 
 var status_color = Color(1, 0, 0, 0.2);
+var checkPoints: Array[Checkpoint]
 
 @export var stay = true
 @export var direction = Vector2.RIGHT
 @export var default_walking: Array[Vector2] = [
 		Vector2(0, 0),
-		Vector2(100, 100)
 		]
-
 @onready var player = get_tree().get_first_node_in_group("player")
 @onready var navigation_agent_2d = $NavigationAgent2D
 @onready var vision = $Vision
@@ -84,6 +83,12 @@ var status_color = Color(1, 0, 0, 0.2);
 
 
 func _ready():
+	var children = get_children()
+	for child in children:
+		if child is Checkpoint:
+			checkPoints.push_back(child)
+	for c in checkPoints:
+		print("YES " + str(c.global_position))
 	direction = direction.normalized()
 	speed = 50
 	vision_angle = 100
@@ -92,6 +97,10 @@ func _ready():
 	seek_degree = 0.0
 	player_was_noticed = false
 	navigation_agent_2d.on_reached_target()
+	if default_walking.size() == 1:
+		print(global_position)
+		default_walking[0] == global_position
+
 
 
 func get_parameter_names():
@@ -112,11 +121,28 @@ func make_path(to_position: Vector2) -> void:
 	navigation_agent_2d.target_position = to_position
 
 
-func move_along_path(delta: float) -> void:
+func move_along_path(delta: float) -> void: #restarts if no point
 	direction = to_local(navigation_agent_2d.get_next_path_position()).normalized()
 	var intended_velocity = direction * speed
 	navigation_agent_2d.set_velocity(intended_velocity)
 	move_and_slide()
+
+
+func hasTarget() -> bool:
+	return navigation_agent_2d.get_next_path_position() == null
+
+
+func restart_path() -> void:
+	var nearest_walking_point = default_walking[0]
+	var nearest_destination = default_walking[0].distance_to(global_position)
+	var destination_to_point: int
+	for i in range(1, default_walking.size() - 1):
+		destination_to_point = default_walking[i].distance_to(global_position)
+		if  destination_to_point < nearest_destination:
+			nearest_destination = destination_to_point
+			nearest_walking_point = default_walking[i]
+	navigation_agent_2d.target_position = default_walking[0]
+
 
 
 func _on_navigation_agent_2d_velocity_computed(safe_velocity):

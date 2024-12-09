@@ -1,7 +1,7 @@
 extends ConditionLeaf
 
 
-func tick(actor, blackboard):
+func tick(actor, blackboard) -> int:
 	var player = actor.player
 	if (
 			actor.intuition.player_in_range

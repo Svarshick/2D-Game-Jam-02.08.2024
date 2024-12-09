@@ -28,4 +28,3 @@ func exit():
 func on_input(event):
 	if Input.is_action_just_pressed("back"):
 		Events.change_menu_window.emit("main_menu")
-

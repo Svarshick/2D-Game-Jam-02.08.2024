@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://cdsrl6y6ngaof"]
+[gd_scene load_steps=31 format=3 uid="uid://cdsrl6y6ngaof"]
 
 [ext_resource type="Script" path="res://guard/guard.gd" id="1_05rgs"]
 [ext_resource type="Script" path="res://guard/vision.gd" id="2_8put1"]
@@ -9,17 +9,18 @@
 [ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence.gd" id="6_ufllo"]
 [ext_resource type="Script" path="res://guard/navigator.gd" id="6_wqqjm"]
 [ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence_reactive.gd" id="7_natjp"]
-[ext_resource type="Script" path="res://guard/beehaviour/player_visibility.gd" id="10_iykuq"]
-[ext_resource type="Script" path="res://guard/beehaviour/vision_change.gd" id="11_dvwgb"]
-[ext_resource type="Script" path="res://guard/beehaviour/player_feeling.gd" id="12_cxb3m"]
-[ext_resource type="Script" path="res://guard/beehaviour/intuition_change.gd" id="13_rwp3h"]
-[ext_resource type="Script" path="res://guard/beehaviour/decrease_player_seek.gd" id="14_oegr5"]
-[ext_resource type="Script" path="res://guard/beehaviour/is_felt_illusion.gd" id="15_d4r11"]
-[ext_resource type="Script" path="res://guard/beehaviour/to_do_chase.gd" id="16_galgt"]
-[ext_resource type="Script" path="res://guard/beehaviour/do_chase.gd" id="17_dj4x6"]
-[ext_resource type="Script" path="res://guard/beehaviour/to_do_manhunt.gd" id="18_t68dl"]
-[ext_resource type="Script" path="res://guard/beehaviour/do_manhunt.gd" id="19_6pj0n"]
-[ext_resource type="Script" path="res://guard/beehaviour/to_default.gd" id="20_3iyvj"]
+[ext_resource type="Script" path="res://guard/beehave/player_visibility.gd" id="10_iykuq"]
+[ext_resource type="Script" path="res://guard/beehave/vision_change.gd" id="11_dvwgb"]
+[ext_resource type="Script" path="res://guard/beehave/player_feeling.gd" id="12_cxb3m"]
+[ext_resource type="Script" path="res://guard/beehave/intuition_change.gd" id="13_rwp3h"]
+[ext_resource type="Script" path="res://guard/beehave/decrease_player_seek.gd" id="14_oegr5"]
+[ext_resource type="Script" path="res://guard/beehave/is_felt_illusion.gd" id="15_d4r11"]
+[ext_resource type="Script" path="res://guard/beehave/to_do_chase.gd" id="16_galgt"]
+[ext_resource type="Script" path="res://guard/beehave/do_chase.gd" id="17_dj4x6"]
+[ext_resource type="Script" path="res://guard/beehave/to_do_manhunt.gd" id="18_t68dl"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence_star.gd" id="18_yjv3k"]
+[ext_resource type="Script" path="res://guard/beehave/do_manhunt.gd" id="19_6pj0n"]
+[ext_resource type="Script" path="res://guard/beehave/to_default.gd" id="20_3iyvj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_aimd0"]
 radius = 6.0
@@ -112,7 +113,7 @@ script = ExtResource("6_wqqjm")
 
 [node name="Bee" type="Node" parent="." node_paths=PackedStringArray("blackboard", "actor")]
 script = ExtResource("4_rr8sg")
-blackboard = NodePath("@Node@24367")
+blackboard = NodePath("@Node@58655")
 actor = NodePath("..")
 
 [node name="GuardBehaviour" type="Node" parent="Bee"]
@@ -167,7 +168,7 @@ script = ExtResource("16_galgt")
 script = ExtResource("17_dj4x6")
 
 [node name="Manhunt" type="Node" parent="Bee/GuardBehaviour/Decision/Player"]
-script = ExtResource("6_ufllo")
+script = ExtResource("18_yjv3k")
 
 [node name="BeginCondition" type="Node" parent="Bee/GuardBehaviour/Decision/Player/Manhunt"]
 script = ExtResource("18_t68dl")

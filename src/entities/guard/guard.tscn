@@ -1,0 +1,189 @@
+[gd_scene load_steps=32 format=3 uid="uid://cdsrl6y6ngaof"]
+
+[ext_resource type="Script" path="res://src/entities/guard/guard.gd" id="1_05rgs"]
+[ext_resource type="Script" path="res://src/entities/guard/vision.gd" id="2_8put1"]
+[ext_resource type="Script" path="res://src/entities/guard/intuition.gd" id="3_n3rmc"]
+[ext_resource type="Texture2D" uid="uid://bhqa63e1vlcm2" path="res://src/entities/guard/kniht_idle_.png" id="4_ijde4"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/beehave_tree.gd" id="4_rr8sg"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/selector.gd" id="5_r8gqg"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence.gd" id="6_ufllo"]
+[ext_resource type="Script" path="res://src/entities/guard/navigator.gd" id="6_wqqjm"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence_reactive.gd" id="7_natjp"]
+[ext_resource type="Script" path="res://src/entities/guard/beehave/is_player_visible.gd" id="10_iykuq"]
+[ext_resource type="Script" path="res://src/entities/guard/beehave/vision_change.gd" id="11_dvwgb"]
+[ext_resource type="Script" path="res://src/entities/guard/beehave/is_player_intuitive_felt.gd" id="12_cxb3m"]
+[ext_resource type="Script" path="res://src/entities/guard/beehave/intuition_change.gd" id="13_rwp3h"]
+[ext_resource type="Script" path="res://src/entities/guard/beehave/decrease_seek.gd" id="14_oegr5"]
+[ext_resource type="Script" path="res://src/entities/guard/beehave/are_illusion_felt.gd" id="15_d4r11"]
+[ext_resource type="Script" path="res://src/entities/guard/beehave/do_chase.gd" id="16_fp73r"]
+[ext_resource type="Script" path="res://src/entities/guard/beehave/to_chase.gd" id="17_mq55g"]
+[ext_resource type="Script" path="res://src/entities/guard/beehave/do_manhunt.gd" id="19_6pj0n"]
+[ext_resource type="Script" path="res://src/entities/guard/beehave/to_manhunt.gd" id="19_sqa13"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/selector_reactive.gd" id="21_2h746"]
+[ext_resource type="Script" path="res://src/entities/guard/beehave/stay.gd" id="21_il1ms"]
+[ext_resource type="Script" path="res://src/entities/guard/beehave/walk.gd" id="22_h3hbd"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_aimd0"]
+radius = 6.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_77yvu"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ayj0a"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3bwks"]
+atlas = ExtResource("4_ijde4")
+region = Rect2(0, 32, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x6oac"]
+atlas = ExtResource("4_ijde4")
+region = Rect2(16, 32, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5n55q"]
+atlas = ExtResource("4_ijde4")
+region = Rect2(32, 32, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mliew"]
+atlas = ExtResource("4_ijde4")
+region = Rect2(48, 32, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cj214"]
+atlas = ExtResource("4_ijde4")
+region = Rect2(64, 32, 16, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tb88x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3bwks")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x6oac")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5n55q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mliew")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cj214")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 7.0
+}]
+
+[node name="Guard" type="CharacterBody2D" groups=["guard"]]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_05rgs")
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_aimd0")
+
+[node name="Vision" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 7
+script = ExtResource("2_8put1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Vision"]
+shape = SubResource("CircleShape2D_77yvu")
+
+[node name="Intuition" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 7
+script = ExtResource("3_n3rmc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Intuition"]
+shape = SubResource("CircleShape2D_ayj0a")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -10)
+sprite_frames = SubResource("SpriteFrames_tb88x")
+animation = &"Idle"
+frame_progress = 0.274616
+
+[node name="Navigator" type="NavigationAgent2D" parent="."]
+path_desired_distance = 10.0
+path_postprocessing = 1
+avoidance_enabled = true
+radius = 7.0
+debug_enabled = true
+debug_path_custom_color = Color(1, 0, 1, 1)
+script = ExtResource("6_wqqjm")
+
+[node name="Beehave" type="Node" parent="." node_paths=PackedStringArray("blackboard", "actor")]
+script = ExtResource("4_rr8sg")
+blackboard = NodePath("@Node@17281")
+actor = NodePath("..")
+
+[node name="GuardBehaviour" type="Node" parent="Beehave"]
+script = ExtResource("7_natjp")
+
+[node name="Perception" type="Node" parent="Beehave/GuardBehaviour"]
+script = ExtResource("6_ufllo")
+
+[node name="Player" type="Node" parent="Beehave/GuardBehaviour/Perception"]
+script = ExtResource("5_r8gqg")
+
+[node name="IsFelt" type="Node" parent="Beehave/GuardBehaviour/Perception/Player"]
+script = ExtResource("5_r8gqg")
+
+[node name="PlayerVisibility" type="Node" parent="Beehave/GuardBehaviour/Perception/Player/IsFelt"]
+script = ExtResource("6_ufllo")
+
+[node name="IsPlayerVisible" type="Node" parent="Beehave/GuardBehaviour/Perception/Player/IsFelt/PlayerVisibility"]
+script = ExtResource("10_iykuq")
+
+[node name="VisionChange" type="Node" parent="Beehave/GuardBehaviour/Perception/Player/IsFelt/PlayerVisibility"]
+script = ExtResource("11_dvwgb")
+
+[node name="PlayerIntuition" type="Node" parent="Beehave/GuardBehaviour/Perception/Player/IsFelt"]
+script = ExtResource("6_ufllo")
+
+[node name="IsPlayerIntuitiveFelt" type="Node" parent="Beehave/GuardBehaviour/Perception/Player/IsFelt/PlayerIntuition"]
+script = ExtResource("12_cxb3m")
+
+[node name="IntuitionChange" type="Node" parent="Beehave/GuardBehaviour/Perception/Player/IsFelt/PlayerIntuition"]
+script = ExtResource("13_rwp3h")
+
+[node name="DecreaseSeek" type="Node" parent="Beehave/GuardBehaviour/Perception/Player"]
+script = ExtResource("14_oegr5")
+
+[node name="AreIllusionsFelt" type="Node" parent="Beehave/GuardBehaviour/Perception"]
+script = ExtResource("15_d4r11")
+
+[node name="Decision" type="Node" parent="Beehave/GuardBehaviour"]
+script = ExtResource("5_r8gqg")
+
+[node name="Player" type="Node" parent="Beehave/GuardBehaviour/Decision"]
+script = ExtResource("5_r8gqg")
+
+[node name="Chase" type="Node" parent="Beehave/GuardBehaviour/Decision/Player"]
+script = ExtResource("6_ufllo")
+
+[node name="DoChase" type="Node" parent="Beehave/GuardBehaviour/Decision/Player/Chase"]
+script = ExtResource("16_fp73r")
+
+[node name="ToChase" type="Node" parent="Beehave/GuardBehaviour/Decision/Player/Chase"]
+script = ExtResource("17_mq55g")
+
+[node name="Manhunt" type="Node" parent="Beehave/GuardBehaviour/Decision/Player"]
+script = ExtResource("6_ufllo")
+
+[node name="DoManhunt" type="Node" parent="Beehave/GuardBehaviour/Decision/Player/Manhunt"]
+script = ExtResource("19_6pj0n")
+
+[node name="ToManhunt" type="Node" parent="Beehave/GuardBehaviour/Decision/Player/Manhunt"]
+script = ExtResource("19_sqa13")
+
+[node name="Patrolling" type="Node" parent="Beehave/GuardBehaviour/Decision"]
+script = ExtResource("21_2h746")
+
+[node name="Stay" type="Node" parent="Beehave/GuardBehaviour/Decision/Patrolling"]
+script = ExtResource("21_il1ms")
+
+[node name="Walk" type="Node" parent="Beehave/GuardBehaviour/Decision/Patrolling"]
+script = ExtResource("22_h3hbd")
+
+[connection signal="velocity_computed" from="Navigator" to="." method="_on_navigation_agent_2d_velocity_computed"]

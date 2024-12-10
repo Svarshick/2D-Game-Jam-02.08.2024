@@ -32,7 +32,7 @@ func before_run(actor: Node, blackboard: Blackboard) -> void:
 	pass
 
 
-## Called after the last time it ticks and returns
+## Called after the las	t time it ticks and returns
 ## [code]SUCCESS[/code] or [code]FAILURE[/code].
 func after_run(actor: Node, blackboard: Blackboard) -> void:
 	pass

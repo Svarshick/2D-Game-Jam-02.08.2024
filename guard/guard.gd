@@ -57,7 +57,7 @@ var seek_degree: float:
 		elif value < statuses.SEE:
 			status = statuses.WORRY
 			status_color.r = 1;
-			status_color.g = (statuses.SEE - statuses.WORRY - value) / (statuses.SEE - statuses.WORRY)
+			status_color.g = (statuses.SEE - value) / (statuses.SEE - statuses.WORRY)
 		else:
 			status = statuses.SEE
 			status_color.r = 1;
@@ -87,8 +87,6 @@ func _ready():
 	for child in children:
 		if child is Checkpoint:
 			checkPoints.push_back(child)
-	for c in checkPoints:
-		print("YES " + str(c.global_position))
 	direction = direction.normalized()
 	speed = 50
 	vision_angle = 100

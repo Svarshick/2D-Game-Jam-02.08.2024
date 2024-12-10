@@ -20,19 +20,21 @@ layout_mode = 2
 script = ExtResource("1_ubp3d")
 
 [node name="ContinueButton" type="Button" parent="CenterContainer/MainMenu"]
+visible = false
 layout_mode = 2
 text = "continue"
 
 [node name="SettingsButton" type="Button" parent="CenterContainer/MainMenu"]
+visible = false
 layout_mode = 2
 text = "settings"
 
 [node name="QuitButton" type="Button" parent="CenterContainer/MainMenu"]
+visible = false
 layout_mode = 2
 text = "quit"
 
 [node name="GuardianSettings" type="VBoxContainer" parent="CenterContainer"]
-visible = false
 layout_mode = 2
 script = ExtResource("2_3nk01")
 

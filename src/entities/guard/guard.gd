@@ -73,10 +73,10 @@ var detected_illusions: Array[Illusion]
 var status_color = Color(1, 0, 0, 0.2);
 var checkpoints = Ring.new()
 
+var TEMP: Array[Checkpoint]
+
 @export var direction = Vector2.RIGHT
-@export var default_walking: Array[Vector2] = [
-		Vector2(0, 0),
-		]
+
 @onready var player = get_tree().get_first_node_in_group("player")
 @onready var navigator = $Navigator
 @onready var vision = $Vision
@@ -86,27 +86,19 @@ var checkpoints = Ring.new()
 func _ready():
 	#prepare checkpoints
 	var children = get_children()
+	var i = 0
 	for child in children:
 		if child is Checkpoint:
 			checkpoints.push_back(child)
-	if checkpoints.size() == 0:
-		var checkpoint = Checkpoint.new()
-		checkpoint.global_position = global_position
-		checkpoints.push_back(checkpoint)
-	for checkpoint in checkpoints:
-		print(checkpoint)
-	#prepare Beehave
-	#beehave.blackboard.set_value("")
-
+	
 	direction = direction.normalized()
+	
 	speed = 50
 	vision_angle = 100
 	vision_range = 200
 	intuition_range = 50
 	seek_degree = 0.0
 	player_was_noticed = false
-	navigator.on_reached_target()
-
 
 
 func get_parameter_names():
@@ -127,33 +119,11 @@ func make_path(to_position: Vector2) -> void:
 	navigator.target_position = to_position
 
 
-func move_along_path(delta: float) -> void: #restarts if no point
+func move_along_path(delta: float) -> void:
 	direction = to_local(navigator.get_next_path_position()).normalized()
 	var intended_velocity = direction * speed
 	navigator.set_velocity(intended_velocity)
 	move_and_slide()
-
-
-#func restart_patrolling() -> void:
-	#var nearest_checkpoint = checkpoints[0]
-	#var nearest_destination = checkpoints[0].distance_to(global_position)
-	#var current_destination: int
-	#for current_checkpoint in checkpoints:
-		#current_destination = current_checkpoint.distance_to(global_position)
-		#if current_destination < nearest_destination:
-			#nearest_checkpoint = current_checkpoint
-	
-
-func restart_path() -> void:
-	var nearest_walking_point = default_walking[0]
-	var nearest_destination = default_walking[0].distance_to(global_position)
-	var destination_to_point: int
-	for i in range(1, default_walking.size() - 1):
-		destination_to_point = default_walking[i].distance_to(global_position)
-		if  destination_to_point < nearest_destination:
-			nearest_destination = destination_to_point
-			nearest_walking_point = default_walking[i]
-	navigator.target_position = default_walking[0]
 
 
 func _on_navigation_agent_2d_velocity_computed(safe_velocity):
@@ -170,7 +140,6 @@ func _process(delta):
 
 func _draw():
 	draw_vision_sector(Vector2.ZERO, direction, vision.range, vision.angle * PI / 180, 20, status_color)
-	draw_circle(Vector2.ZERO, intuition.range,  status_color)
 
 
 func draw_vision_sector(point: Vector2, direction: Vector2, length: float, angle: float, precision: int, color: Color):
@@ -188,6 +157,7 @@ func draw_vision_sector(point: Vector2, direction: Vector2, length: float, angle
 			points.insert(i, current_point)
 		current_point = current_point.rotated(angle / (precision - 1))
 	draw_colored_polygon(points, color)
+
 
 #legacy
 

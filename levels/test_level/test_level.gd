@@ -3,7 +3,7 @@ extends Node2D
 @onready var tile_map = $TileMap
 @onready var player = $Player
 @onready var guard = $Guard
-@onready var guardClass = load("res://guard/guard.tscn")
+@onready var guardClass = load("res://src/entities/guard/beehave/are_illusion_felt.gd")
 
 func get_player():
 	return player

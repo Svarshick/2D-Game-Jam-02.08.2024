@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bjvlcoxwn8i62"]
+[gd_scene load_steps=21 format=3 uid="uid://bjvlcoxwn8i62"]
 
 [ext_resource type="Script" path="res://levels/test_level/test_level.gd" id="1_2rdjq"]
 [ext_resource type="Texture2D" uid="uid://dklstmlbtc3vv" path="res://Pixel Adventure 1/Free/Terrain/Terrain (16x16).png" id="2_smfav"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bb4hv2wr6fw4a" path="res://src/special classes/checkpoint/Checkpoint.tscn" id="7_2unba"]
 [ext_resource type="PackedScene" uid="uid://sjude81s1opk" path="res://src/ui/ui.tscn" id="7_lhxqy"]
 [ext_resource type="PackedScene" uid="uid://bn5bfmw38rhhq" path="res://src/special classes/level_transiter/LevelTransiter.tscn" id="8_q5hcs"]
+[ext_resource type="Script" path="res://src/special classes/checkpoint/checkpoint.gd" id="9_ndjj8"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_2itf2"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
@@ -421,6 +422,8 @@ sources/1 = SubResource("TileSetAtlasSource_qfmc3")
 [node name="world" type="Node2D"]
 script = ExtResource("1_2rdjq")
 
+[node name="ui" parent="." instance=ExtResource("7_lhxqy")]
+
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_gwu1v")
 format = 2
@@ -439,39 +442,15 @@ position = Vector2(232, 181)
 up_direction = Vector2(-0.99995, -0.0099995)
 direction = Vector2(0, 1)
 
-[node name="Checkpoint" parent="Guard" instance=ExtResource("7_2unba")]
-position = Vector2(154, 140)
-
 [node name="Checkpoint2" parent="Guard" instance=ExtResource("7_2unba")]
-position = Vector2(25, 231)
+position = Vector2(173, 2)
 
-[node name="ui" parent="." instance=ExtResource("7_lhxqy")]
+[node name="Checkpoint3" parent="Guard" instance=ExtResource("7_2unba")]
+position = Vector2(239, -226)
 
-[node name="Guard2" parent="." instance=ExtResource("6_winuo")]
-position = Vector2(304, 188)
-default_walking = Array[Vector2]([Vector2(464, 117), Vector2(315, 180)])
-
-[node name="Guard4" parent="." instance=ExtResource("6_winuo")]
-position = Vector2(495, -132)
-direction = Vector2(-1, 0.05)
-
-[node name="Guard5" parent="." instance=ExtResource("6_winuo")]
-position = Vector2(383, 29)
-direction = Vector2(-1, 0)
-
-[node name="Guard6" parent="." instance=ExtResource("6_winuo")]
-position = Vector2(277, -13)
-direction = Vector2(1, 1)
-
-[node name="Guard7" parent="." instance=ExtResource("6_winuo")]
-position = Vector2(325, -135)
-direction = Vector2(0, 1)
-default_walking = Array[Vector2]([Vector2(325, -130)])
-
-[node name="Guard8" parent="." instance=ExtResource("6_winuo")]
-position = Vector2(211, -127)
-direction = Vector2(-1, 0)
-default_walking = Array[Vector2]([Vector2(215, -120)])
+[node name="Checkpoint4" type="Node2D" parent="Guard"]
+position = Vector2(2, -197)
+script = ExtResource("9_ndjj8")
 
 [node name="LevelTransiter" parent="." instance=ExtResource("8_q5hcs")]
 position = Vector2(485, 199)

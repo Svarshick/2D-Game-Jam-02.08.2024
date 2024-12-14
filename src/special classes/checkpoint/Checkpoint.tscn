@@ -3,9 +3,5 @@
 [ext_resource type="Script" path="res://src/special classes/checkpoint/checkpoint.gd" id="1_a81l7"]
 
 [node name="Checkpoint" type="Node2D"]
+z_as_relative = false
 script = ExtResource("1_a81l7")
-
-[node name="Timer" type="Timer" parent="."]
-one_shot = true
-
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

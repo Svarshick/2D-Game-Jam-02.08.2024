@@ -29,9 +29,12 @@ func _iter_get(arg):
 
 
 func next() -> Variant:
-	var current_element = data[current_index]
 	current_index = (current_index + 1) % data.size()
-	return current_element
+	return data[current_index]
+
+
+func current() -> Variant:
+	return data[current_index]
 
 
 func size() -> int:
@@ -40,3 +43,10 @@ func size() -> int:
 
 func push_back(e: Variant):
 	data.push_back(e)
+
+
+func get_element(number: int) -> Variant:
+	if number > data.size():
+		printerr("no such element: " + str(number))
+		return null
+	return data[number]	

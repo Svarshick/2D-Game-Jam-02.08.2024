@@ -1,7 +1,8 @@
-[gd_scene load_steps=32 format=3 uid="uid://cdsrl6y6ngaof"]
+[gd_scene load_steps=33 format=3 uid="uid://cdsrl6y6ngaof"]
 
 [ext_resource type="Script" path="res://src/entities/guard/guard.gd" id="1_05rgs"]
 [ext_resource type="Script" path="res://src/entities/guard/vision.gd" id="2_8put1"]
+[ext_resource type="Script" path="res://src/special classes/checkpoint/checkpoint.gd" id="2_c487f"]
 [ext_resource type="Script" path="res://src/entities/guard/intuition.gd" id="3_n3rmc"]
 [ext_resource type="Texture2D" uid="uid://bhqa63e1vlcm2" path="res://src/entities/guard/kniht_idle_.png" id="4_ijde4"]
 [ext_resource type="Script" path="res://addons/beehave/nodes/beehave_tree.gd" id="4_rr8sg"]
@@ -78,6 +79,9 @@ collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_05rgs")
 
+[node name="Checkpoint" type="Node2D" parent="."]
+script = ExtResource("2_c487f")
+
 [node name="Hitbox" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_aimd0")
 
@@ -114,7 +118,7 @@ script = ExtResource("6_wqqjm")
 
 [node name="Beehave" type="Node" parent="." node_paths=PackedStringArray("blackboard", "actor")]
 script = ExtResource("4_rr8sg")
-blackboard = NodePath("@Node@17281")
+blackboard = NodePath("@Node@17269")
 actor = NodePath("..")
 
 [node name="GuardBehaviour" type="Node" parent="Beehave"]
@@ -154,7 +158,7 @@ script = ExtResource("14_oegr5")
 script = ExtResource("15_d4r11")
 
 [node name="Decision" type="Node" parent="Beehave/GuardBehaviour"]
-script = ExtResource("5_r8gqg")
+script = ExtResource("21_2h746")
 
 [node name="Player" type="Node" parent="Beehave/GuardBehaviour/Decision"]
 script = ExtResource("5_r8gqg")
@@ -177,13 +181,14 @@ script = ExtResource("19_6pj0n")
 [node name="ToManhunt" type="Node" parent="Beehave/GuardBehaviour/Decision/Player/Manhunt"]
 script = ExtResource("19_sqa13")
 
-[node name="Patrolling" type="Node" parent="Beehave/GuardBehaviour/Decision"]
-script = ExtResource("21_2h746")
+[node name="SelectorComposite" type="Node" parent="Beehave/GuardBehaviour/Decision"]
+script = ExtResource("5_r8gqg")
 
-[node name="Stay" type="Node" parent="Beehave/GuardBehaviour/Decision/Patrolling"]
-script = ExtResource("21_il1ms")
-
-[node name="Walk" type="Node" parent="Beehave/GuardBehaviour/Decision/Patrolling"]
+[node name="Walk" type="Node" parent="Beehave/GuardBehaviour/Decision/SelectorComposite"]
 script = ExtResource("22_h3hbd")
 
+[node name="Stay" type="Node" parent="Beehave/GuardBehaviour/Decision/SelectorComposite"]
+script = ExtResource("21_il1ms")
+
+[connection signal="path_changed" from="Navigator" to="Navigator" method="_on_path_changed"]
 [connection signal="velocity_computed" from="Navigator" to="." method="_on_navigation_agent_2d_velocity_computed"]

@@ -8,9 +8,8 @@ func _ready():
 
 
 func on_reached_target():
-	guard.beehave.blackboard.set_value("target is reached", true, "custom")
-	if guard.status == guard.statuses.DEFAULT:
-		var position = guard.default_walking[point_number]
-		target_position = position
-		point_number += 1
-		point_number = point_number % guard.default_walking.size()
+	for checkpoint in guard.checkpoints:
+		print("checkpoint coordinate: " + str(checkpoint.global_position))
+
+func _on_path_changed() -> void:
+	print("_on_path_changed(): " + str(target_position))

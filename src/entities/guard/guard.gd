@@ -1,8 +1,14 @@
 extends CharacterBody2D
 
+<<<<<<< HEAD
+var config_stats = ConfigFile.new()
+var err = config_stats.load("res://resources/stats.cfg")
+
+=======
 class_name Guard
 
 #to_resource
+>>>>>>> 90bc6c2361b30ea0dd324c9cfad7d4e7d09997a9
 var speed: float: 
 	set(value):
 		speed = value
@@ -21,17 +27,17 @@ var intuition_range: float:
 		intuition.range = value 
 #YOU HAVE TO REMAKE IT
 
-
-enum statuses {
-	DEFAULT = 0,
-	WORRY = 75,
-	SEE = 100
+var statuses : Dictionary = {
+	"DEFAULT": config_stats.get_value("guard", "default_status"),
+	"WORRY": config_stats.get_value("guard", "worry_status"),
+	"SEE": config_stats.get_value("guard", "see_status"),
 }
 
-var default_seek_increment = 10
-var default_seek_decrement = -2
-var on_notice_seek_increment = 20
-var on_notice_seek_decrement = -1
+var default_seek_increment = config_stats.get_value("guard", "default_seek_increment")
+var default_seek_decrement = config_stats.get_value("guard", "default_seek_decrement")
+var on_notice_seek_increment = config_stats.get_value("guard", "on_notice_seek_increment")
+var on_notice_seek_decrement = config_stats.get_value("guard", "on_notice_seek_decrement")
+
 var player_was_noticed: bool:
 	set(value):
 		player_was_noticed = value
@@ -76,8 +82,15 @@ var detected_illusions: Array[Illusion]
 var status_color = Color(1, 0, 0, 0.2);
 var checkpoints = Ring.new()
 
+<<<<<<< HEAD
+@export var direction = Vector2(0, 0)
+@export var default_walking: Array[Vector2] = [
+		Vector2(0, 0),
+		]
+=======
 @export var direction = Vector2.RIGHT
 
+>>>>>>> 90bc6c2361b30ea0dd324c9cfad7d4e7d09997a9
 @onready var player = get_tree().get_first_node_in_group("player")
 @onready var navigator = $Navigator
 @onready var vision = $Vision
@@ -93,6 +106,26 @@ func _ready():
 	for child in children:
 		if child is Checkpoint:
 			checkpoints.push_back(child)
+<<<<<<< HEAD
+	if checkpoints.size() == 0:
+		var checkpoint = Checkpoint.new()
+		checkpoint.global_position = global_position
+		checkpoints.push_back(checkpoint)
+	for checkpoint : Checkpoint in checkpoints:
+		pass
+		#print(checkpoint)
+	#prepare Beehave
+	#beehave.blackboard.set_value("")
+
+	if (direction == Vector2(0, 0)):
+		direction = config_stats.get_value("guard", "direction")
+	direction = direction.normalized()
+	speed = config_stats.get_value("guard", "speed")
+	vision_angle = config_stats.get_value("guard", "vision_angle")
+	vision_range = config_stats.get_value("guard", "vision_range")
+	intuition_range = config_stats.get_value("guard", "intuition_range")
+	seek_degree = config_stats.get_value("guard", "seek_degree")
+=======
 	
 	beehave.process_mode = Node.PROCESS_MODE_INHERIT
 	# NavigationServer2D.map_changed.connect(beehave_on)
@@ -103,6 +136,7 @@ func _ready():
 	vision_range = 200
 	intuition_range = 50
 	seek_degree = 0.0
+>>>>>>> 90bc6c2361b30ea0dd324c9cfad7d4e7d09997a9
 	player_was_noticed = false
 	
 	set_animation("Idle")

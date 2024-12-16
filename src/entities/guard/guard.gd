@@ -1,14 +1,9 @@
 extends CharacterBody2D
-
-<<<<<<< HEAD
+class_name Guard
 var config_stats = ConfigFile.new()
 var err = config_stats.load("res://resources/stats.cfg")
 
-=======
-class_name Guard
-
 #to_resource
->>>>>>> 90bc6c2361b30ea0dd324c9cfad7d4e7d09997a9
 var speed: float: 
 	set(value):
 		speed = value
@@ -82,15 +77,11 @@ var detected_illusions: Array[Illusion]
 var status_color = Color(1, 0, 0, 0.2);
 var checkpoints = Ring.new()
 
-<<<<<<< HEAD
 @export var direction = Vector2(0, 0)
 @export var default_walking: Array[Vector2] = [
 		Vector2(0, 0),
 		]
-=======
-@export var direction = Vector2.RIGHT
 
->>>>>>> 90bc6c2361b30ea0dd324c9cfad7d4e7d09997a9
 @onready var player = get_tree().get_first_node_in_group("player")
 @onready var navigator = $Navigator
 @onready var vision = $Vision
@@ -106,17 +97,7 @@ func _ready():
 	for child in children:
 		if child is Checkpoint:
 			checkpoints.push_back(child)
-<<<<<<< HEAD
-	if checkpoints.size() == 0:
-		var checkpoint = Checkpoint.new()
-		checkpoint.global_position = global_position
-		checkpoints.push_back(checkpoint)
-	for checkpoint : Checkpoint in checkpoints:
-		pass
-		#print(checkpoint)
-	#prepare Beehave
-	#beehave.blackboard.set_value("")
-
+		
 	if (direction == Vector2(0, 0)):
 		direction = config_stats.get_value("guard", "direction")
 	direction = direction.normalized()
@@ -125,18 +106,6 @@ func _ready():
 	vision_range = config_stats.get_value("guard", "vision_range")
 	intuition_range = config_stats.get_value("guard", "intuition_range")
 	seek_degree = config_stats.get_value("guard", "seek_degree")
-=======
-	
-	beehave.process_mode = Node.PROCESS_MODE_INHERIT
-	# NavigationServer2D.map_changed.connect(beehave_on)
-	direction = direction.normalized()
-	
-	speed = 50
-	vision_angle = 100
-	vision_range = 200
-	intuition_range = 50
-	seek_degree = 0.0
->>>>>>> 90bc6c2361b30ea0dd324c9cfad7d4e7d09997a9
 	player_was_noticed = false
 	
 	set_animation("Idle")

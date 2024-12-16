@@ -3,7 +3,13 @@ extends CharacterBody2D
 var speed = 200.0
 var old_direction: Vector2
 var direction = Vector2.RIGHT
+var default_collision_layer
+
 @onready var animator = $AnimatedSprite2D
+
+
+func _ready():
+	default_collision_layer = collision_layer
 
 
 func _physics_process(delta):
@@ -11,8 +17,8 @@ func _physics_process(delta):
 		old_direction = direction
 	direction = Vector2(Input.get_axis("left", "right"), Input.get_axis("up", "down"))
 	velocity = direction * speed
+	move_and_slide()
 	set_animation(direction)
-	move_and_collide(velocity * delta)
 
 
 func set_animation(direction: Vector2):
@@ -34,4 +40,3 @@ func set_animation(direction: Vector2):
 			animator.play("Idle_down")
 		else:
 			animator.play("Idle_up")
-		

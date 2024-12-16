@@ -1,30 +1,28 @@
 extends ActionLeaf
 
+var rotation_speed: float
+var main_direction: Vector2
+var checkpoint: Checkpoint
 
-func before_run(actor: Node, blackboard: Blackboard) -> void:
-	var checkpoint = actor.checkpoints.current()
+func before_run(actor: Node, blackboard: Blackboard):
+	checkpoint = actor.checkpoints.current()
+	rotation_speed =(
+					2 * checkpoint.turn_angle * PI / 180 *
+					checkpoint.turns_count / checkpoint.wait_time 
+					)
+	main_direction = actor.direction
+	
 	checkpoint.timer.start()
-	listen_checkpoint_timeout(blackboard, checkpoint, true)
 
 
 func tick(actor: Node, blackboard: Blackboard) -> int:
-	var c = actor.checkpoints.current()
-	print("time: " + str(c.timer.time_left))
-	if blackboard.get_value("checkpoint timer timeout"):
-		blackboard.set_value("checkpoint timer timeout", false)
-		var checkpoint = actor.checkpoints.current()
-		listen_checkpoint_timeout(blackboard, checkpoint, false)
+	if checkpoint.timer.is_stopped():
 		return FAILURE
+	
+	var current_angle = main_direction.angle_to(actor.direction)
+	if (abs(current_angle) > checkpoint.turn_angle * PI / 180):
+		rotation_speed = -rotation_speed
+	actor.direction = actor.direction.rotated(rotation_speed * get_process_delta_time())
+	
+	actor.set_animation("Idle")
 	return RUNNING
-
-
-func listen_checkpoint_timeout(blackboard: Blackboard, checkpoint: Checkpoint, doListen: bool) -> void:
-	if doListen:
-		checkpoint.timer.timeout.connect(on_checkpoint_timeout.bind(blackboard))
-	else:
-		checkpoint.timer.timeout.disconnect(on_checkpoint_timeout.bind(blackboard))
-
-
-func on_checkpoint_timeout(blackboard: Blackboard):
-	print("DA!!")
-	blackboard.set_value("checkpoint timer timeout", true)

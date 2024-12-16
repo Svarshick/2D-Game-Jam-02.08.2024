@@ -10,6 +10,7 @@ var range: float:
 
 var player_in_range = false
 
+
 func _ready():
 	body_entered.connect(on_body_entered_intuition)
 	body_exited.connect(on_body_exited_intuition)

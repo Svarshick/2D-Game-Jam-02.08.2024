@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+class_name Guard
+
 #to_resource
 var speed: float: 
 	set(value):
@@ -65,6 +67,7 @@ var seek_degree: float:
 			player_was_noticed = true
 
 		seek_degree = value
+
 #unused
 var illusions_stack: Array[Illusion]
 var detected_illusions: Array[Illusion]
@@ -73,8 +76,6 @@ var detected_illusions: Array[Illusion]
 var status_color = Color(1, 0, 0, 0.2);
 var checkpoints = Ring.new()
 
-var TEMP: Array[Checkpoint]
-
 @export var direction = Vector2.RIGHT
 
 @onready var player = get_tree().get_first_node_in_group("player")
@@ -82,15 +83,19 @@ var TEMP: Array[Checkpoint]
 @onready var vision = $Vision
 @onready var intuition = $Intuition
 @onready var beehave = $Beehave
+@onready var animator = $AnimatedSprite2D
+@onready var start_checkpoint = $StartCheckpoint
+
 
 func _ready():
 	#prepare checkpoints
 	var children = get_children()
-	var i = 0
 	for child in children:
 		if child is Checkpoint:
 			checkpoints.push_back(child)
 	
+	beehave.process_mode = Node.PROCESS_MODE_INHERIT
+	# NavigationServer2D.map_changed.connect(beehave_on)
 	direction = direction.normalized()
 	
 	speed = 50
@@ -99,6 +104,8 @@ func _ready():
 	intuition_range = 50
 	seek_degree = 0.0
 	player_was_noticed = false
+	
+	set_animation("Idle")
 
 
 func get_parameter_names():
@@ -138,8 +145,20 @@ func _process(delta):
 	queue_redraw()
 
 
+func set_animation(state: String):
+	if direction.x > 0.1:
+		animator.play(state + "_right")
+	elif direction.x < -0.1:
+		animator.play(state + "_left")
+	elif direction.y > 0:
+		animator.play(state + "_down")
+	else:
+		animator.play(state + "_up")
+
+
 func _draw():
 	draw_vision_sector(Vector2.ZERO, direction, vision.range, vision.angle * PI / 180, 20, status_color)
+	draw_circle(Vector2.ZERO, intuition_range, status_color)
 
 
 func draw_vision_sector(point: Vector2, direction: Vector2, length: float, angle: float, precision: int, color: Color):
@@ -149,7 +168,7 @@ func draw_vision_sector(point: Vector2, direction: Vector2, length: float, angle
 	points.insert(0, point)
 	var space_state = get_world_2d().get_direct_space_state()
 	for i in range(1, precision):
-		var query = PhysicsRayQueryParameters2D.create(global_position, global_position + current_point, vision.mask)
+		var query = PhysicsRayQueryParameters2D.create(global_position, global_position + current_point, vision.collision_mask)
 		var sight_check = space_state.intersect_ray(query)
 		if not sight_check.is_empty():
 			points.insert(i, sight_check.position - global_position)

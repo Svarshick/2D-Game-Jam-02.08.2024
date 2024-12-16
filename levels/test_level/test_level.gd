@@ -1,18 +1,14 @@
 extends Node2D
 
-@onready var tile_map = $TileMap
-@onready var player = $Player
-@onready var guard = $Guard
-@onready var guardClass = load("res://src/entities/guard/beehave/are_illusion_felt.gd")
+@onready var navigation_layer = $LayerHolder/Floor
 
-func get_player():
-	return player
+
+func _ready() -> void:
+	await get_tree().create_timer(1).timeout # kind of synchronization with NavigationServer 
+	for child in get_children():
+		if child.is_in_group("guard"):
+			child.process_mode = Node2D.PROCESS_MODE_INHERIT
+
 
 func _physics_process(delta):
 	queue_redraw()
-
-
-func _ready():
-	#var new_guard = guardClass.instantiate()
-	#add_child(new_guard)
-	pass

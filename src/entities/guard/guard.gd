@@ -1,8 +1,14 @@
 extends CharacterBody2D
 
+<<<<<<< HEAD
 var config_stats = ConfigFile.new()
 var err = config_stats.load("res://resources/stats.cfg")
 
+=======
+class_name Guard
+
+#to_resource
+>>>>>>> 90bc6c2361b30ea0dd324c9cfad7d4e7d09997a9
 var speed: float: 
 	set(value):
 		speed = value
@@ -67,6 +73,7 @@ var seek_degree: float:
 			player_was_noticed = true
 
 		seek_degree = value
+
 #unused
 var illusions_stack: Array[Illusion]
 var detected_illusions: Array[Illusion]
@@ -75,15 +82,23 @@ var detected_illusions: Array[Illusion]
 var status_color = Color(1, 0, 0, 0.2);
 var checkpoints = Ring.new()
 
+<<<<<<< HEAD
 @export var direction = Vector2(0, 0)
 @export var default_walking: Array[Vector2] = [
 		Vector2(0, 0),
 		]
+=======
+@export var direction = Vector2.RIGHT
+
+>>>>>>> 90bc6c2361b30ea0dd324c9cfad7d4e7d09997a9
 @onready var player = get_tree().get_first_node_in_group("player")
 @onready var navigator = $Navigator
 @onready var vision = $Vision
 @onready var intuition = $Intuition
 @onready var beehave = $Beehave
+@onready var animator = $AnimatedSprite2D
+@onready var start_checkpoint = $StartCheckpoint
+
 
 func _ready():
 	#prepare checkpoints
@@ -91,6 +106,7 @@ func _ready():
 	for child in children:
 		if child is Checkpoint:
 			checkpoints.push_back(child)
+<<<<<<< HEAD
 	if checkpoints.size() == 0:
 		var checkpoint = Checkpoint.new()
 		checkpoint.global_position = global_position
@@ -109,9 +125,21 @@ func _ready():
 	vision_range = config_stats.get_value("guard", "vision_range")
 	intuition_range = config_stats.get_value("guard", "intuition_range")
 	seek_degree = config_stats.get_value("guard", "seek_degree")
+=======
+	
+	beehave.process_mode = Node.PROCESS_MODE_INHERIT
+	# NavigationServer2D.map_changed.connect(beehave_on)
+	direction = direction.normalized()
+	
+	speed = 50
+	vision_angle = 100
+	vision_range = 200
+	intuition_range = 50
+	seek_degree = 0.0
+>>>>>>> 90bc6c2361b30ea0dd324c9cfad7d4e7d09997a9
 	player_was_noticed = false
-	navigator.on_reached_target()
-
+	
+	set_animation("Idle")
 
 
 func get_parameter_names():
@@ -132,33 +160,11 @@ func make_path(to_position: Vector2) -> void:
 	navigator.target_position = to_position
 
 
-func move_along_path(delta: float) -> void: #restarts if no point
+func move_along_path(delta: float) -> void:
 	direction = to_local(navigator.get_next_path_position()).normalized()
 	var intended_velocity = direction * speed
 	navigator.set_velocity(intended_velocity)
 	move_and_slide()
-
-
-#func restart_patrolling() -> void:
-	#var nearest_checkpoint = checkpoints[0]
-	#var nearest_destination = checkpoints[0].distance_to(global_position)
-	#var current_destination: int
-	#for current_checkpoint in checkpoints:
-		#current_destination = current_checkpoint.distance_to(global_position)
-		#if current_destination < nearest_destination:
-			#nearest_checkpoint = current_checkpoint
-	
-
-func restart_path() -> void:
-	var nearest_walking_point = default_walking[0]
-	var nearest_destination = default_walking[0].distance_to(global_position)
-	var destination_to_point: int
-	for i in range(1, default_walking.size() - 1):
-		destination_to_point = default_walking[i].distance_to(global_position)
-		if  destination_to_point < nearest_destination:
-			nearest_destination = destination_to_point
-			nearest_walking_point = default_walking[i]
-	navigator.target_position = default_walking[0]
 
 
 func _on_navigation_agent_2d_velocity_computed(safe_velocity):
@@ -173,9 +179,20 @@ func _process(delta):
 	queue_redraw()
 
 
+func set_animation(state: String):
+	if direction.x > 0.1:
+		animator.play(state + "_right")
+	elif direction.x < -0.1:
+		animator.play(state + "_left")
+	elif direction.y > 0:
+		animator.play(state + "_down")
+	else:
+		animator.play(state + "_up")
+
+
 func _draw():
 	draw_vision_sector(Vector2.ZERO, direction, vision.range, vision.angle * PI / 180, 20, status_color)
-	draw_circle(Vector2.ZERO, intuition.range,  status_color)
+	draw_circle(Vector2.ZERO, intuition_range, status_color)
 
 
 func draw_vision_sector(point: Vector2, direction: Vector2, length: float, angle: float, precision: int, color: Color):
@@ -185,7 +202,7 @@ func draw_vision_sector(point: Vector2, direction: Vector2, length: float, angle
 	points.insert(0, point)
 	var space_state = get_world_2d().get_direct_space_state()
 	for i in range(1, precision):
-		var query = PhysicsRayQueryParameters2D.create(global_position, global_position + current_point, vision.mask)
+		var query = PhysicsRayQueryParameters2D.create(global_position, global_position + current_point, vision.collision_mask)
 		var sight_check = space_state.intersect_ray(query)
 		if not sight_check.is_empty():
 			points.insert(i, sight_check.position - global_position)
@@ -193,6 +210,7 @@ func draw_vision_sector(point: Vector2, direction: Vector2, length: float, angle
 			points.insert(i, current_point)
 		current_point = current_point.rotated(angle / (precision - 1))
 	draw_colored_polygon(points, color)
+
 
 #legacy
 

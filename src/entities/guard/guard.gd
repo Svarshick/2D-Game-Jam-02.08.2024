@@ -146,9 +146,9 @@ func _process(delta):
 
 
 func set_animation(state: String):
-	if direction.x > 0.1:
+	if direction.x > 0.7:
 		animator.play(state + "_right")
-	elif direction.x < -0.1:
+	elif direction.x < -0.7:
 		animator.play(state + "_left")
 	elif direction.y > 0:
 		animator.play(state + "_down")

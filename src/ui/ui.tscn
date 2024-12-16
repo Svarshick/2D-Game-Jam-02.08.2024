@@ -21,15 +21,19 @@ script = ExtResource("1_ubp3d")
 
 [node name="ContinueButton" type="Button" parent="CenterContainer/MainMenu"]
 layout_mode = 2
-text = "continue"
+text = "Continue"
+
+[node name="RestartButton" type="Button" parent="CenterContainer/MainMenu"]
+layout_mode = 2
+text = "Restart"
 
 [node name="SettingsButton" type="Button" parent="CenterContainer/MainMenu"]
 layout_mode = 2
-text = "settings"
+text = "Settings"
 
 [node name="QuitButton" type="Button" parent="CenterContainer/MainMenu"]
 layout_mode = 2
-text = "quit"
+text = "Quit"
 
 [node name="GuardianSettings" type="VBoxContainer" parent="CenterContainer"]
 layout_mode = 2

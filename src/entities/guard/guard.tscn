@@ -1,7 +1,8 @@
-[gd_scene load_steps=79 format=3 uid="uid://cdsrl6y6ngaof"]
+[gd_scene load_steps=81 format=3 uid="uid://cdsrl6y6ngaof"]
 
 [ext_resource type="Script" path="res://src/entities/guard/guard.gd" id="1_05rgs"]
 [ext_resource type="Script" path="res://src/entities/guard/vision.gd" id="2_8put1"]
+[ext_resource type="Script" path="res://src/entities/guard/attack.gd" id="2_v66su"]
 [ext_resource type="Script" path="res://src/entities/guard/intuition.gd" id="3_n3rmc"]
 [ext_resource type="Texture2D" uid="uid://bhqa63e1vlcm2" path="res://src/entities/guard/kniht_idle_.png" id="4_ijde4"]
 [ext_resource type="Script" path="res://addons/beehave/nodes/beehave_tree.gd" id="4_rr8sg"]
@@ -29,6 +30,8 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_aimd0"]
 radius = 6.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tcaw3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_77yvu"]
 
@@ -422,6 +425,14 @@ script = ExtResource("1_05rgs")
 [node name="Hitbox" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_aimd0")
 
+[node name="Attack" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 34
+script = ExtResource("2_v66su")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attack"]
+shape = SubResource("CircleShape2D_tcaw3")
+
 [node name="Vision" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 79
@@ -458,7 +469,7 @@ script = ExtResource("7_yvah1")
 
 [node name="Beehave" type="Node" parent="." node_paths=PackedStringArray("blackboard", "actor")]
 script = ExtResource("4_rr8sg")
-blackboard = NodePath("@Node@17291")
+blackboard = NodePath("@Node@26140")
 actor = NodePath("..")
 
 [node name="GuardBehaviour" type="Node" parent="Beehave"]
@@ -548,4 +559,5 @@ script = ExtResource("22_h3hbd")
 [node name="Stay" type="Node" parent="Beehave/GuardBehaviour/Decision/Patrol"]
 script = ExtResource("21_il1ms")
 
+[connection signal="body_entered" from="Attack" to="Attack" method="_on_body_entered"]
 [connection signal="velocity_computed" from="Navigator" to="." method="_on_navigation_agent_2d_velocity_computed"]

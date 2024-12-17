@@ -1,12 +1,15 @@
 extends CharacterBody2D
+
 class_name Guard
+
 var config_stats = ConfigFile.new()
 var err = config_stats.load("res://resources/stats.cfg")
 
 #to_resource
-var speed: float: 
+var walk_speed: float
+var run_speed: float: 
 	set(value):
-		speed = value
+		run_speed = value
 		navigator.max_speed = value
 var vision_angle: float:
 	set(value):
@@ -76,6 +79,7 @@ var detected_illusions: Array[Illusion]
 
 var status_color = Color(1, 0, 0, 0.2);
 var checkpoints = Ring.new()
+var current_speed: float
 
 @export var direction = Vector2(0, 0)
 
@@ -98,7 +102,8 @@ func _ready():
 	if (direction == Vector2(0, 0)):
 		direction = config_stats.get_value("guard", "direction")
 	direction = direction.normalized()
-	speed = config_stats.get_value("guard", "speed")
+	walk_speed = config_stats.get_value("guard", "walk_speed")
+	run_speed = config_stats.get_value("guard", "run_speed")
 	vision_angle = config_stats.get_value("guard", "vision_angle")
 	vision_range = config_stats.get_value("guard", "vision_range")
 	intuition_range = config_stats.get_value("guard", "intuition_range")
@@ -110,7 +115,8 @@ func _ready():
 
 func get_parameter_names():
 	return [
-#			"speed",
+#			"walk_speed",
+#			"run_speed",
 #			"vision_angle", 
 			"vision_range", 
 			"intuition_range",
@@ -135,7 +141,7 @@ func make_path(to_position: Vector2) -> void:
 
 func move_along_path(delta: float) -> void:
 	direction = to_local(navigator.get_next_path_position()).normalized()
-	var intended_velocity = direction * speed
+	var intended_velocity = direction * current_speed
 	navigator.set_velocity(intended_velocity)
 	move_and_slide()
 

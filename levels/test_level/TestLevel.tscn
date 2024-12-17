@@ -518,7 +518,6 @@ sources/0 = SubResource("TileSetAtlasSource_ada8d")
 
 [sub_resource type="Environment" id="Environment_61sg6"]
 background_mode = 3
-background_color = Color(0.994329, 0, 0.263551, 1)
 adjustment_enabled = true
 
 [node name="TestLevel" type="Node2D" groups=["level"]]

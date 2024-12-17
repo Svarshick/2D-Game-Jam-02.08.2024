@@ -3,6 +3,7 @@ extends ActionLeaf
 
 func before_run(actor: Node, blackboard: Blackboard):
 	var checkpoint = actor.checkpoints.next()
+	actor.current_speed = actor.walk_speed
 	actor.make_path(checkpoint.global_position)
 
 

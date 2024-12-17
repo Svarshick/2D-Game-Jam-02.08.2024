@@ -2,7 +2,10 @@ extends CharacterBody2D
 
 class_name Player
 
-var speed = 200.0
+var config_stats = ConfigFile.new()
+var err = config_stats.load("res://resources/stats.cfg")
+
+var speed: float
 var old_direction: Vector2
 var direction = Vector2.RIGHT
 var default_collision_layer
@@ -12,13 +15,14 @@ var default_collision_layer
 
 
 func _ready():
+	speed = config_stats.get_value("player", "speed")
 	default_collision_layer = collision_layer
 
 
 func _physics_process(delta):
 	if direction != Vector2.ZERO:
 		old_direction = direction
-	direction = Vector2(Input.get_axis("left", "right"), Input.get_axis("up", "down"))
+	direction = Vector2(Input.get_axis("left", "right"), Input.get_axis("up", "down")).normalized()
 	velocity = direction * speed
 	move_and_slide()
 	set_animation(direction)
@@ -74,4 +78,4 @@ func prepate_level(): #! before entities
 			child.call_deferred("set_process_mode", Node.PROCESS_MODE_DISABLED)
 	
 	var environment: Environment = level.world_environment.environment
-	environment.adjustment_brightness = 8 
+	environment.adjustment_brightness = 8

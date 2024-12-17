@@ -10,6 +10,7 @@ func before_run(actor: Node, blackboard: Blackboard):
 	while last_player_position.distance_to(predicted_position) > prediction_radius:
 		predicted_position = NavigationServer2D.map_get_random_point(map, 1, true) #get_random_inside_circle(last_player_position, prediction_radius)
 	#THANK YOU, GODOT
+	actor.current_speed = actor.walk_speed
 	actor.make_path(predicted_position)
 
 

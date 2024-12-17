@@ -2,6 +2,7 @@ extends ActionLeaf
 
 
 func before_run(actor: Node, blackboard: Blackboard):
+	actor.current_speed = actor.run_speed
 	actor.make_path(blackboard.get_value("last player position"))
 
 

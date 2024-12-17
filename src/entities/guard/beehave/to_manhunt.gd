@@ -1,14 +1,22 @@
 extends ActionLeaf
 
-var prediction_radius = 120
 
 func before_run(actor: Node, blackboard: Blackboard):
 	var last_player_position: Vector2 = blackboard.get_value("last player position")
 	var map = actor.navigator.get_navigation_map()
 	#IT NAVE TO BE REMAKED
 	var predicted_position = NavigationServer2D.map_get_random_point(map, 1, true) #get_random_inside_circle(last_player_position, prediction_radius)
-	while last_player_position.distance_to(predicted_position) > prediction_radius:
+	var i = 0
+	while (
+		last_player_position.distance_to(predicted_position)
+		> actor.prediction_range
+		and i < 60 
+		):
 		predicted_position = NavigationServer2D.map_get_random_point(map, 1, true) #get_random_inside_circle(last_player_position, prediction_radius)
+		i += 1
+	
+	if i == 60:
+		predicted_position = last_player_position
 	#THANK YOU, GODOT
 	actor.current_speed = actor.walk_speed
 	actor.make_path(predicted_position)

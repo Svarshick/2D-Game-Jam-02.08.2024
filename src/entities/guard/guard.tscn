@@ -1,4 +1,4 @@
-[gd_scene load_steps=81 format=3 uid="uid://cdsrl6y6ngaof"]
+[gd_scene load_steps=82 format=3 uid="uid://cdsrl6y6ngaof"]
 
 [ext_resource type="Script" path="res://src/entities/guard/guard.gd" id="1_05rgs"]
 [ext_resource type="Script" path="res://src/entities/guard/vision.gd" id="2_8put1"]
@@ -27,6 +27,7 @@
 [ext_resource type="Script" path="res://src/entities/guard/beehave/stay.gd" id="21_il1ms"]
 [ext_resource type="Script" path="res://src/entities/guard/beehave/walk.gd" id="22_h3hbd"]
 [ext_resource type="Script" path="res://src/entities/guard/beehave/look_around.gd" id="24_6e2bg"]
+[ext_resource type="Script" path="res://src/entities/guard/beehave/running.gd" id="26_hiiek"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_aimd0"]
 radius = 6.0
@@ -540,14 +541,20 @@ script = ExtResource("6_ufllo")
 [node name="GetLastPlayerPosition" type="Node" parent="Beehave/GuardBehaviour/Decision/Player/Manhunt/ToManhunt/ContinueManhunt"]
 script = ExtResource("21_gsmsh")
 
-[node name="Seek" type="Node" parent="Beehave/GuardBehaviour/Decision/Player/Manhunt/ToManhunt/ContinueManhunt"]
+[node name="SequenceReactiveComposite" type="Node" parent="Beehave/GuardBehaviour/Decision/Player/Manhunt/ToManhunt/ContinueManhunt"]
+script = ExtResource("7_natjp")
+
+[node name="Seek" type="Node" parent="Beehave/GuardBehaviour/Decision/Player/Manhunt/ToManhunt/ContinueManhunt/SequenceReactiveComposite"]
 script = ExtResource("6_ufllo")
 
-[node name="GetPredictedPosition" type="Node" parent="Beehave/GuardBehaviour/Decision/Player/Manhunt/ToManhunt/ContinueManhunt/Seek"]
+[node name="GetPredictedPosition" type="Node" parent="Beehave/GuardBehaviour/Decision/Player/Manhunt/ToManhunt/ContinueManhunt/SequenceReactiveComposite/Seek"]
 script = ExtResource("19_sqa13")
 
-[node name="LookAround" type="Node" parent="Beehave/GuardBehaviour/Decision/Player/Manhunt/ToManhunt/ContinueManhunt/Seek"]
+[node name="LookAround" type="Node" parent="Beehave/GuardBehaviour/Decision/Player/Manhunt/ToManhunt/ContinueManhunt/SequenceReactiveComposite/Seek"]
 script = ExtResource("24_6e2bg")
+
+[node name="Running" type="Node" parent="Beehave/GuardBehaviour/Decision/Player/Manhunt/ToManhunt/ContinueManhunt/SequenceReactiveComposite"]
+script = ExtResource("26_hiiek")
 
 [node name="Patrol" type="Node" parent="Beehave/GuardBehaviour/Decision"]
 script = ExtResource("5_r8gqg")

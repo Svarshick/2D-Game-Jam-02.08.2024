@@ -23,6 +23,7 @@ var intuition_range: float:
 	set(value):
 		intuition_range = value
 		intuition.range = value 
+var prediction_range: float
 #YOU HAVE TO REMAKE IT
 
 var statuses : Dictionary = {
@@ -108,6 +109,7 @@ func _ready():
 	vision_range = config_stats.get_value("guard", "vision_range")
 	intuition_range = config_stats.get_value("guard", "intuition_range")
 	seek_degree = config_stats.get_value("guard", "seek_degree")
+	prediction_range = config_stats.get_value("guard", "prediction_range")
 	player_was_noticed = false
 	
 	set_animation("Idle")

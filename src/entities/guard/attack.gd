@@ -2,4 +2,5 @@ extends Area2D
 
 
 func _on_body_entered(body: Node2D) -> void:
-	get_tree().reload_current_scene()
+	if body is Player:
+		body.handle_death(get_parent())

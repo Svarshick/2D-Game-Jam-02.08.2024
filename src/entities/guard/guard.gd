@@ -78,9 +78,6 @@ var status_color = Color(1, 0, 0, 0.2);
 var checkpoints = Ring.new()
 
 @export var direction = Vector2(0, 0)
-@export var default_walking: Array[Vector2] = [
-		Vector2(0, 0),
-		]
 
 @onready var player = get_tree().get_first_node_in_group("player")
 @onready var navigator = $Navigator
@@ -115,7 +112,7 @@ func get_parameter_names():
 	return [
 #			"speed",
 #			"vision_angle", 
-#			"vision_range", 
+			"vision_range", 
 			"intuition_range",
 			"player_was_noticed",
 			"default_seek_increment",
@@ -123,6 +120,13 @@ func get_parameter_names():
 			"on_notice_seek_increment",
 			"on_notice_seek_decrement"
 			]
+
+
+func enter_kill():
+	visible = true
+	vision.visible = false
+	intuition.visible = false
+	modulate = Color.BLACK
 
 
 func make_path(to_position: Vector2) -> void:
@@ -144,10 +148,6 @@ func is_illusion_right(illusion: Illusion):
 	return true
 
 
-func _process(delta):
-	queue_redraw()
-
-
 func set_animation(state: String):
 	if direction.x > 0.7:
 		animator.play(state + "_right")
@@ -157,44 +157,3 @@ func set_animation(state: String):
 		animator.play(state + "_down")
 	else:
 		animator.play(state + "_up")
-
-
-func _draw():
-	draw_vision_sector(Vector2.ZERO, direction, vision.range, vision.angle * PI / 180, 20, status_color)
-	draw_circle(Vector2.ZERO, intuition_range, status_color)
-
-
-func draw_vision_sector(point: Vector2, direction: Vector2, length: float, angle: float, precision: int, color: Color):
-	var current_point = (direction * length).rotated(-angle/2)
-	var points = PackedVector2Array()
-	points.resize(precision + 1)
-	points.insert(0, point)
-	var space_state = get_world_2d().get_direct_space_state()
-	for i in range(1, precision):
-		var query = PhysicsRayQueryParameters2D.create(global_position, global_position + current_point, vision.collision_mask)
-		var sight_check = space_state.intersect_ray(query)
-		if not sight_check.is_empty():
-			points.insert(i, sight_check.position - global_position)
-		else:
-			points.insert(i, current_point)
-		current_point = current_point.rotated(angle / (precision - 1))
-	draw_colored_polygon(points, color)
-
-
-#legacy
-
-#func draw_sector(point: Vector2, direction: Vector2, length: float, angle: float, precision: int, color: Color):
-	#var current_point = (direction * length).rotated(-angle/2)
-	#var points = PackedVector2Array([point, current_point])
-	#var counter = 1
-	#while (counter < precision):
-		#current_point = current_point.rotated(angle / (precision - 1))
-		#counter += 1
-		#points.push_back(current_point)
-	#draw_colored_polygon(points, color)
-
-
-#func move_toward_position(to_position: Vector2, delta: float): useless cosde 
-	#direction = Vector2(to_position - position).normalized()
-	#velocity = direction * speed
-	#move_and_collide(velocity * delta)

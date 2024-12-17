@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://d3go7felji04i"]
+[gd_scene load_steps=61 format=3 uid="uid://d3go7felji04i"]
 
 [ext_resource type="Script" path="res://src/entities/player/player.gd" id="1_njlvf"]
 [ext_resource type="Texture2D" uid="uid://dqg6hi3mlwwd1" path="res://src/entities/player/idle_player_.png" id="2_3vpah"]
@@ -418,6 +418,10 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8226y"]
 radius = 5.0
 
+[sub_resource type="Curve" id="Curve_hhruf"]
+_data = [Vector2(0.0321429, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.07347, 0.0, 0, 0]
+point_count = 2
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_layer = 2
 collision_mask = 61
@@ -431,9 +435,10 @@ shape = SubResource("CircleShape2D_yjhya")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -11)
 sprite_frames = SubResource("SpriteFrames_eyu6r")
-animation = &"Idle_up"
+animation = &"Idle_down"
 
 [node name="Area2D" type="Area2D" parent="."]
+visible = false
 collision_layer = 0
 collision_mask = 16
 script = ExtResource("4_v44w1")
@@ -441,6 +446,22 @@ script = ExtResource("4_v44w1")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, -9)
 shape = SubResource("CapsuleShape2D_8226y")
+
+[node name="DeathEffect" type="CPUParticles2D" parent="."]
+position = Vector2(0, -13)
+emitting = false
+amount = 60
+lifetime = 1.5
+one_shot = true
+explosiveness = 1.0
+direction = Vector2(0, -1)
+spread = 60.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 30.0
+initial_velocity_max = 60.0
+scale_amount_max = 2.0
+scale_amount_curve = SubResource("Curve_hhruf")
+color = Color(0.826072, 0.176457, 0.169923, 1)
 
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
 [connection signal="body_exited" from="Area2D" to="Area2D" method="_on_body_exited"]

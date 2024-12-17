@@ -13,6 +13,8 @@ config_version=5
 config/name="2d Game Jam"
 run/main_scene="res://src/main/Main.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/show_image=false
 config/icon="res://icon.svg"
 
 [autoload]
@@ -26,6 +28,7 @@ BeehaveGlobalDebugger="*res://addons/beehave/debug/global_debugger.gd"
 window/size/viewport_width=400
 window/size/viewport_height=200
 window/stretch/mode="canvas_items"
+display_server/minimum_display_time=200
 
 [dotnet]
 

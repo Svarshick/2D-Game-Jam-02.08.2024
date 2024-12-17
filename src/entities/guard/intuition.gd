@@ -16,6 +16,14 @@ func _ready():
 	body_exited.connect(on_body_exited_intuition)
 
 
+func _process(delta):
+	queue_redraw()
+
+
+func _draw():
+	draw_circle(Vector2.ZERO, range, guard.status_color)
+
+
 func on_body_entered_intuition(body):
 	if body == guard.player:
 		player_in_range = true

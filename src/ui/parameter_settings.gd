@@ -16,6 +16,7 @@ func fill(n_group: String, v_name: String):
 	parameter_name.text = variable_name
 	parameter_value.text = str(node.get_indexed(variable_name))
 
+
 func _on_parameter_value_text_changed(new_text):
 	var nodes = get_tree().get_nodes_in_group(node_group)
 	for node in nodes:

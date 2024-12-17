@@ -18,4 +18,4 @@ func on_change_menu_window(window_name: String):
 
 
 func _unhandled_input(event):
-	current_window.on_input(event)
+	current_window.on_input(event)	

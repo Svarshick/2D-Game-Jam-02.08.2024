@@ -460,7 +460,6 @@ path_desired_distance = 10.0
 path_postprocessing = 1
 avoidance_enabled = true
 radius = 7.0
-debug_enabled = true
 debug_path_custom_color = Color(1, 0, 1, 1)
 
 [node name="StartCheckpoint" type="Node2D" parent="."]
@@ -469,7 +468,7 @@ script = ExtResource("7_yvah1")
 
 [node name="Beehave" type="Node" parent="." node_paths=PackedStringArray("blackboard", "actor")]
 script = ExtResource("4_rr8sg")
-blackboard = NodePath("@Node@26140")
+blackboard = NodePath("@Node@17291")
 actor = NodePath("..")
 
 [node name="GuardBehaviour" type="Node" parent="Beehave"]

@@ -40,5 +40,6 @@ layout_mode = 2
 script = ExtResource("2_3nk01")
 
 [connection signal="pressed" from="CenterContainer/MainMenu/ContinueButton" to="CenterContainer/MainMenu" method="_on_continue_button_pressed"]
+[connection signal="pressed" from="CenterContainer/MainMenu/RestartButton" to="CenterContainer/MainMenu" method="_on_restart_button_pressed"]
 [connection signal="pressed" from="CenterContainer/MainMenu/SettingsButton" to="CenterContainer/MainMenu" method="_on_settings_button_pressed"]
 [connection signal="pressed" from="CenterContainer/MainMenu/QuitButton" to="CenterContainer/MainMenu" method="_on_quit_button_pressed"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://bjvlcoxwn8i62"]
+[gd_scene load_steps=17 format=4 uid="uid://bjvlcoxwn8i62"]
 
 [ext_resource type="Script" path="res://levels/test_level/test_level.gd" id="1_2rdjq"]
 [ext_resource type="Texture2D" uid="uid://rpershkhkeut" path="res://tileset.webp" id="3_bouyk"]
@@ -516,7 +516,12 @@ terrain_set_0/terrain_0/name = "curtain"
 terrain_set_0/terrain_0/color = Color(0.588985, 0.53257, 0.231224, 1)
 sources/0 = SubResource("TileSetAtlasSource_ada8d")
 
-[node name="TestLevel" type="Node2D"]
+[sub_resource type="Environment" id="Environment_61sg6"]
+background_mode = 3
+background_color = Color(0.994329, 0, 0.263551, 1)
+adjustment_enabled = true
+
+[node name="TestLevel" type="Node2D" groups=["level"]]
 script = ExtResource("1_2rdjq")
 
 [node name="LayerHolder" type="Node2D" parent="."]
@@ -532,7 +537,7 @@ tile_set = SubResource("TileSet_xik0k")
 
 [node name="Hideout" type="TileMapLayer" parent="LayerHolder"]
 z_index = 8
-tile_map_data = PackedByteArray("AAAIAAQAAAAIAAAAAAAIAAUAAAAIAAEAAAAJAAQAAAAKAAAAAAAJAAUAAAAKAAEAAAAKAAQAAAAKAAAAAAAKAAUAAAAKAAEAAAALAAQAAAAKAAAAAAALAAUAAAAKAAEAAAAMAAQAAAAKAAAAAAAMAAUAAAAKAAEAAAANAAQAAAAJAAAAAAANAAUAAAAJAAEAAAAPAAEAAAAJAAEAAAAPAAAAAAAJAAAAAAAOAAEAAAAKAAEAAAAOAAAAAAAKAAAAAAANAAEAAAAKAAEAAAANAAAAAAAKAAAAAAAMAAEAAAAKAAEAAAAMAAAAAAAKAAAAAAALAAEAAAAKAAEAAAALAAAAAAAKAAAAAAAKAAEAAAAKAAEAAAAKAAAAAAAKAAAAAAAJAAEAAAAKAAEAAAAJAAAAAAAKAAAAAAAIAAEAAAAKAAEAAAAIAAAAAAAKAAAAAAAHAAEAAAAKAAEAAAAHAAAAAAAKAAAAAAAGAAEAAAAKAAEAAAAGAAAAAAAKAAAAAAAFAAEAAAAIAAEAAAAFAAAAAAAIAAAAAAA=")
+tile_map_data = PackedByteArray("AAAIAAQAAAAIAAAAAAAIAAUAAAAIAAEAAAAJAAQAAAAKAAAAAAAJAAUAAAAKAAEAAAAKAAQAAAAKAAAAAAAKAAUAAAAKAAEAAAALAAQAAAAKAAAAAAALAAUAAAAKAAEAAAAMAAQAAAAKAAAAAAAMAAUAAAAKAAEAAAANAAQAAAAJAAAAAAANAAUAAAAJAAEAAAAPAAEAAAAJAAEAAAAPAAAAAAAJAAAAAAAOAAEAAAAKAAEAAAAOAAAAAAAKAAAAAAANAAEAAAAKAAEAAAANAAAAAAAKAAAAAAAMAAEAAAAKAAEAAAAMAAAAAAAKAAAAAAALAAEAAAAKAAEAAAALAAAAAAAKAAAAAAAKAAEAAAAKAAEAAAAKAAAAAAAKAAAAAAAJAAEAAAAKAAEAAAAJAAAAAAAKAAAAAAAIAAEAAAAKAAEAAAAIAAAAAAAKAAAAAAAHAAEAAAAKAAEAAAAHAAAAAAAKAAAAAAAGAAEAAAAKAAEAAAAGAAAAAAAKAAAAAAAFAAEAAAAIAAEAAAAFAAAAAAAIAAAAAAACAAUAAAAJAAEAAAACAAQAAAAJAAAAAAA=")
 tile_set = SubResource("TileSet_jtarm")
 
 [node name="ui" parent="." instance=ExtResource("7_lhxqy")]
@@ -559,3 +564,6 @@ script = ExtResource("8_m5gex")
 [node name="LevelTransiter" parent="." instance=ExtResource("8_q5hcs")]
 position = Vector2(275, 259)
 path_to_level = "res://levels/test_level/TestLevel.tscn"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_61sg6")

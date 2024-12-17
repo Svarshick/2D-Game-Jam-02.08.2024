@@ -1,6 +1,7 @@
 extends Node2D
 
 @onready var navigation_layer = $LayerHolder/Floor
+@onready var world_environment = $WorldEnvironment
 
 
 func _ready():

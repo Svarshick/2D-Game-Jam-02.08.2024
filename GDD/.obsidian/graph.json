@@ -1,0 +1,44 @@
+{
+  "collapse-filter": false,
+  "search": "",
+  "showTags": false,
+  "showAttachments": false,
+  "hideUnresolved": false,
+  "showOrphans": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "path:\"Main directories\"  ",
+      "color": {
+        "a": 1,
+        "rgb": 16711680
+      }
+    },
+    {
+      "query": "tag:#action ",
+      "color": {
+        "a": 1,
+        "rgb": 8007173
+      }
+    },
+    {
+      "query": "tag:#stat",
+      "color": {
+        "a": 1,
+        "rgb": 8007173
+      }
+    }
+  ],
+  "collapse-display": false,
+  "showArrow": false,
+  "textFadeMultiplier": 0,
+  "nodeSizeMultiplier": 2.29479166666667,
+  "lineSizeMultiplier": 1,
+  "collapse-forces": false,
+  "centerStrength": 0,
+  "repelStrength": 10,
+  "linkStrength": 0.619791666666667,
+  "linkDistance": 250,
+  "scale": 0.22780024342410282,
+  "close": false
+}
